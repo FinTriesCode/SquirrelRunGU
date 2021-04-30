@@ -19,6 +19,7 @@ namespace SquirrelRun
 
         //variables
         Sprite2D squirrel;
+        int displayHeight, displayWidth;
 
         struct Sprite2D
         {
@@ -85,7 +86,9 @@ namespace SquirrelRun
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            displayHeight = graphics.GraphicsDevice.Viewport.Height;
+            displayWidth = graphics.GraphicsDevice.Viewport.Width;
+            graphics.ToggleFullScreen();
             base.Initialize();
         }
 
@@ -97,7 +100,7 @@ namespace SquirrelRun
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            squirrel = new Sprite2D(Content, "squirrel", 0.8f, 10f, false);
+            squirrel = new Sprite2D(Content, "squirrel", 0.4f, 10f, false);
 
             // TODO: use this.Content to load your game content here
         }
@@ -125,6 +128,8 @@ namespace SquirrelRun
             squirrel.rect.X = (int)squirrel.position.X;
             squirrel.rect.Y = (int)squirrel.position.Y;
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
+
+            squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
             base.Update(gameTime);
         }
