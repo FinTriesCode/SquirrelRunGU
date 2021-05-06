@@ -33,6 +33,7 @@ namespace SquirrelRun
             public Rectangle rect;
             public bool bonus;
             public float size;
+            public float rotation; //Amount of rotation
 
             public Sprite2D(ContentManager content, string filename, float sizeratio, float _speed, bool _bonus)
             {
@@ -100,7 +101,12 @@ namespace SquirrelRun
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            squirrel = new Sprite2D(Content, "squirrel", 0.4f, 10f, false);
+            squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
+
+            //applying squirrel position
+            squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            squirrel.rotation = 0;
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -121,18 +127,70 @@ namespace SquirrelRun
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //exit game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+
+            //setting squirrel position
             squirrel.rect.X = (int)squirrel.position.X;
             squirrel.rect.Y = (int)squirrel.position.Y;
+
+            //set squirrel bounding box
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
 
-            squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            
+
+            //player movement
+            PlayerMovement();
+
 
             base.Update(gameTime);
         }
+
+
+        void PlayerMovement()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+
+                squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.position.Y -= squirrel.speed;
+                //press w and update the sprite to the forward version of the original sprite
+                //we will have 3 different sprites of the squireel, but each save is the same imgae, just rotated to the left/right
+
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                squirrel.image = Content.Load<Texture2D>("SquirrelLeft");
+                squirrel.position.X -= squirrel.speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                squirrel.image = Content.Load<Texture2D>("SquirrelRight");
+                squirrel.position.X += squirrel.speed;
+            }
+
+            //arrow keys for Marion
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                
+                squirrel.position.Y -= squirrel.speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+              
+                squirrel.position.X -= squirrel.speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                
+                squirrel.position.X += squirrel.speed;
+            }
+
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
