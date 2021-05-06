@@ -22,8 +22,13 @@ namespace SquirrelRun
         Sprite2D squirrel_left;
         Sprite2D squirrel_right;
 
+        
+
 
         int displayHeight, displayWidth;
+
+        
+
 
         struct Sprite2D
         {
@@ -60,43 +65,8 @@ namespace SquirrelRun
 
             }     
 
-        }
-
-        /* struct LeftSprite2D
-        {
-            public Texture2D image;
-            public Vector3 position;
-            public bool visible;
-            public BoundingBox bBox;
-            public float speed;
-            public Color colour;
-            public Vector2 origin;
-            public Rectangle rect;
-            public bool bonus;
-            public float size;
-            public LeftSprite2D(ContentManager content, string filename, float sizeratio, float _speed, bool _bonus)
-
-
-            image = content.Load<Texture2D>(filename);
-            size = sizeratio;
-            origin.X = image.Width / 2;
-            origin.Y = image.Height / 2;
-            rect.Width = (int) (image.Width* size);
-            rect.Height = (int) (image.Height* size);
-
-            //initial values for rest of properties
-            bBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
-            position = Vector3.Zero;
-            rect.X = 0;
-            rect.Y = 0;
-            visible = true;
-            speed = _speed;
-            colour = Color.White;
-            bonus = _bonus;
-}
-        }
-
-     */
+        }        
+    
 
         struct Graphic2D
         {
@@ -113,6 +83,27 @@ namespace SquirrelRun
                 rect.Y = (dheight - rect.Height) / 2;
             }
         }
+
+        
+
+        struct Water
+        {                       
+            public Vector3 waterPosition;
+            public BoundingBox waterBBOX;           
+            public float waterSize;
+
+            public Water(ContentManager content, string filename, float sizeratio)
+            {
+                //water bounding box
+                waterSize = sizeratio;
+
+                waterBBOX = new BoundingBox(Vector3.Zero, Vector3.Zero);  //now we need to set the water's position in loadContent using the size of the image/screen and devide the height by 2 and add half the screen's value (making it the top half of the screen)
+                waterPosition = Vector3.Zero;                
+
+            }
+        
+        }
+
 
         public Game1()
         {
@@ -147,7 +138,7 @@ namespace SquirrelRun
             squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
 
-            //applying squirrel position
+            //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
            
 
@@ -202,7 +193,7 @@ namespace SquirrelRun
                 squirrel.image = Content.Load<Texture2D>("Squirrel");               
                 squirrel.position.Y -= squirrel.speed;
                 //press w and update the sprite to the forward version of the original sprite
-                //we will have 3 different sprites of the squireel, but each save is the same imgae, just rotated to the left/right
+                
 
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -232,6 +223,8 @@ namespace SquirrelRun
                 squirrel.image = Content.Load<Texture2D>("squirrel_right");
                 squirrel.position.X += squirrel.speed;
             }
+
+           
 
         }
 
