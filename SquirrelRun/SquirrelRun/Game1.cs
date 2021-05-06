@@ -19,6 +19,10 @@ namespace SquirrelRun
 
         //variables
         Sprite2D squirrel;
+        Sprite2D squirrel_left;
+        Sprite2D squirrel_right;
+
+
         int displayHeight, displayWidth;
 
         struct Sprite2D
@@ -33,7 +37,7 @@ namespace SquirrelRun
             public Rectangle rect;
             public bool bonus;
             public float size;
-            public float rotation; //Amount of rotation
+            
 
             public Sprite2D(ContentManager content, string filename, float sizeratio, float _speed, bool _bonus)
             {
@@ -54,8 +58,46 @@ namespace SquirrelRun
                 colour = Color.White;
                 bonus = _bonus;
 
-            }
+            }     
+
         }
+
+        /* struct LeftSprite2D
+        {
+            public Texture2D image;
+            public Vector3 position;
+            public bool visible;
+            public BoundingBox bBox;
+            public float speed;
+            public Color colour;
+            public Vector2 origin;
+            public Rectangle rect;
+            public bool bonus;
+            public float size;
+            public LeftSprite2D(ContentManager content, string filename, float sizeratio, float _speed, bool _bonus)
+
+
+            image = content.Load<Texture2D>(filename);
+            size = sizeratio;
+            origin.X = image.Width / 2;
+            origin.Y = image.Height / 2;
+            rect.Width = (int) (image.Width* size);
+            rect.Height = (int) (image.Height* size);
+
+            //initial values for rest of properties
+            bBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
+            position = Vector3.Zero;
+            rect.X = 0;
+            rect.Y = 0;
+            visible = true;
+            speed = _speed;
+            colour = Color.White;
+            bonus = _bonus;
+}
+        }
+
+     */
+
         struct Graphic2D
         {
             public Texture2D image;
@@ -102,10 +144,12 @@ namespace SquirrelRun
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
+            squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
+            squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
 
             //applying squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
-            squirrel.rotation = 0;
+           
 
 
             // TODO: use this.Content to load your game content here
@@ -155,7 +199,7 @@ namespace SquirrelRun
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
 
-                squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.image = Content.Load<Texture2D>("Squirrel");               
                 squirrel.position.Y -= squirrel.speed;
                 //press w and update the sprite to the forward version of the original sprite
                 //we will have 3 different sprites of the squireel, but each save is the same imgae, just rotated to the left/right
@@ -163,29 +207,29 @@ namespace SquirrelRun
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                squirrel.image = Content.Load<Texture2D>("SquirrelLeft");
+                squirrel.image = Content.Load<Texture2D>("squirrel_left");
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                squirrel.image = Content.Load<Texture2D>("SquirrelRight");
+                squirrel.image = Content.Load<Texture2D>("squirrel_right");
                 squirrel.position.X += squirrel.speed;
             }
 
             //arrow keys for Marion
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                
+                squirrel.image = Content.Load<Texture2D>("Squirrel");
                 squirrel.position.Y -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-              
+                squirrel.image = Content.Load<Texture2D>("squirrel_left");
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                
+                squirrel.image = Content.Load<Texture2D>("squirrel_right");
                 squirrel.position.X += squirrel.speed;
             }
 
