@@ -98,7 +98,7 @@ namespace SquirrelRun
         }
 
         
-        //bounding box for water - "will kill player upon contact (yet to code)"
+        //bounding box for water - "will kill player upon contact (yet to code function)"
         struct Water
         {                       
             public Vector3 waterPosition;
@@ -135,10 +135,13 @@ namespace SquirrelRun
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
             graphics.ToggleFullScreen();
 
+            //font variable
             font = Content.Load<SpriteFont>("SR font");
 
             base.Initialize();
@@ -151,13 +154,16 @@ namespace SquirrelRun
          protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+
+            //sprite variables and calling 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
             squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
+
             startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
-            car = new Sprite2D(Content, "car", 0.4f, 5f, false);
-            
+
+            car = new Sprite2D(Content, "car", 0.4f, 5f, false);           
             car2 = new Sprite2D(Content, "car", 0.4f, 5f, false);            
 
             //applying starting squirrel position
@@ -175,9 +181,7 @@ namespace SquirrelRun
             car.position = carSpawnPos;
             car2.position = car2SpawnPos;
             //so that when car reaches end postion, it will reset to car spawn position
-
-
-            // TODO: use this.Content to load your game content here
+            
         }
 
         /// <summary>
@@ -215,11 +219,12 @@ namespace SquirrelRun
             car.rect.Y = (int)car.position.Y;
             Content.Load<Texture2D>("car");
 
+            //setting car 2 position
             car2.rect.X = (int)car2.position.X;
             car2.rect.Y = (int)car2.position.Y;
             Content.Load<Texture2D>("car");
 
-            //set car bounding box
+            //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
 
@@ -231,14 +236,14 @@ namespace SquirrelRun
             base.Update(gameTime);
         }
 
-
+        //movement function for player
         void PlayerMovement()
-        {
+        {   //controls for pro gamers
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
 
                 squirrel.image = Content.Load<Texture2D>("Squirrel");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size); 
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
                 //press w and update the sprite to the forward version of the original sprite
@@ -299,6 +304,7 @@ namespace SquirrelRun
         {
             //set up nut and then scoring
         }
+       
 
         void CarCode()
         {
