@@ -29,8 +29,8 @@ namespace SquirrelRun
         int displayHeight, displayWidth;
 
         //Vector3 startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+        Vector3 startingPosition = Vector3.Zero;
 
-               
 
         struct Sprite2D
         {
@@ -112,6 +112,7 @@ namespace SquirrelRun
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
         }
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace SquirrelRun
             squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
             squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
-            
+            startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
             car = new Sprite2D(Content, "car", 0.4f, 5f, false);
 
             //applying starting squirrel position
