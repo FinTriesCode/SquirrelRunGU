@@ -22,11 +22,23 @@ namespace SquirrelRun
         Sprite2D squirrel_left;
         Sprite2D squirrel_right;
         Sprite2D car;
+        Sprite2D car2;
+        SpriteFont font;
 
 
         int lives = 5;
         int score = 0;
         int displayHeight, displayWidth;
+        bool gameOver = false;
+
+        float carSpeed = 2.5f;
+        Vector3 carSpawnPos = Vector3.Zero;
+        Vector3 carEndPos = Vector3.Zero;
+
+
+        float car2Speed = 4.5f;
+        Vector3 car2SpawnPos = Vector3.Zero;
+        Vector3 car2EndPos = Vector3.Zero;
 
         //Vector3 startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
         Vector3 startingPosition = Vector3.Zero;
@@ -127,6 +139,9 @@ namespace SquirrelRun
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
             graphics.ToggleFullScreen();
+
+            font = Content.Load<SpriteFont>("SR font");
+
             base.Initialize();
         }
 
@@ -143,12 +158,23 @@ namespace SquirrelRun
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
             startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
             car = new Sprite2D(Content, "car", 0.4f, 5f, false);
+            
+            car2 = new Sprite2D(Content, "car", 0.4f, 5f, false);            
 
             //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
-            car.position = new Vector3(displayWidth / 2, displayHeight / 2, 0);
-            
-          
+
+            carSpawnPos = new Vector3(displayWidth - 50, displayHeight / 2, 0); //set car spawn position
+            carEndPos = new Vector3(-40, displayHeight / 2, 0); // set car end position
+
+            car2SpawnPos = new Vector3(displayWidth + 100, displayHeight / 2 - 30, 0); //set car spawn position
+            car2EndPos = new Vector3(displayWidth, displayHeight / 2, 0); // set car end position
+
+            car.position = carSpawnPos;
+            car2.position = car2SpawnPos;
+            //so that when car reaches end postion, it will reset to car spawn position
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -187,13 +213,19 @@ namespace SquirrelRun
             car.rect.Y = (int)car.position.Y;
             Content.Load<Texture2D>("car");
 
+            car2.rect.X = (int)car2.position.X;
+            car2.rect.Y = (int)car2.position.Y;
+            Content.Load<Texture2D>("car");
+
             //set car bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
 
+            car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
 
             //player movement
             PlayerMovement();
-
+            CarCode();
+            Car2Code();
 
             base.Update(gameTime);
         }
@@ -256,27 +288,62 @@ namespace SquirrelRun
 
         public void Lives()
         {
-             
+             if (lives <= 0)
+            {
+                gameOver = true;
+            }               
         }
 
         public void Scoring()
         {
-            
+            //set up nut and then scoring
         }
 
-        void carCode()
+        void CarCode()
         {
             if (squirrel.bBox.Intersects(car.bBox))
             {
-                
-                
+                SquirrelDeath();               
+            }
+
+            car.position.X -= carSpeed; //move car to left automatically
+
+            if(car.position.X == carEndPos.X) //if car position is equal to car end position
+            {
+                car.position.X = carSpawnPos.X; //car positon 'resets' to car spawn position
+            }
+
+          
+
+        }
+
+        void Car2Code()
+        {
+            if (squirrel.bBox.Intersects(car2.bBox))
+            {
+                SquirrelDeath();
+            }
+
+            car2.position.X += car2Speed; //move car to left automatically
+
+            if (car2.position.X == car2EndPos.X) //if car position is equal to car end position
+            {
+                car2.position.X = car2SpawnPos.X; //car positon 'resets' to car spawn position
             }
         }
 
         void SquirrelDeath()
         {
             lives--;
-            
+            squirrel.position = startingPosition;
+        }
+
+        void GameOver()
+        {
+            if (gameOver == true)
+            {
+                //do later
+            }
         }
 
         /// <summary>
@@ -296,6 +363,12 @@ namespace SquirrelRun
             //draw so that we can visibly see the sprites on the screen.
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
             spriteBatch.Draw(car.image, car.rect, Color.White);
+            spriteBatch.Draw(car2.image, car2.rect, Color.White);
+
+            //display font of lives and score
+            spriteBatch.DrawString(font, "Score: ", new Vector2(25, 50), Color.White);
+            spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
+
 
             spriteBatch.End();
             base.Draw(gameTime);
