@@ -21,14 +21,16 @@ namespace SquirrelRun
         Sprite2D squirrel;
         Sprite2D squirrel_left;
         Sprite2D squirrel_right;
+        Sprite2D car;
 
-        
 
-
+        int lives = 5;
+        int score = 0;
         int displayHeight, displayWidth;
 
-        
+        //Vector3 startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
+               
 
         struct Sprite2D
         {
@@ -85,7 +87,7 @@ namespace SquirrelRun
         }
 
         
-
+        //bounding box for water - "will kill player upon contact (yet to code)"
         struct Water
         {                       
             public Vector3 waterPosition;
@@ -103,6 +105,7 @@ namespace SquirrelRun
             }
         
         }
+    
 
 
         public Game1()
@@ -130,19 +133,21 @@ namespace SquirrelRun
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
+         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
             squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
+            
+            car = new Sprite2D(Content, "car", 0.4f, 5f, false);
 
             //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
-           
-
-
+            car.position = new Vector3(displayWidth / 2, displayHeight / 2, 0);
+            
+          
             // TODO: use this.Content to load your game content here
         }
 
@@ -175,7 +180,15 @@ namespace SquirrelRun
             //set squirrel bounding box
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
 
-            
+
+            //setting car position
+            car.rect.X = (int)car.position.X;
+            car.rect.Y = (int)car.position.Y;
+            Content.Load<Texture2D>("car");
+
+            //set car bounding box
+            car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
+
 
             //player movement
             PlayerMovement();
@@ -190,7 +203,9 @@ namespace SquirrelRun
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
 
-                squirrel.image = Content.Load<Texture2D>("Squirrel");               
+                squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
                 //press w and update the sprite to the forward version of the original sprite
                 
@@ -199,11 +214,15 @@ namespace SquirrelRun
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 squirrel.image = Content.Load<Texture2D>("squirrel_left");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 squirrel.image = Content.Load<Texture2D>("squirrel_right");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
 
@@ -211,16 +230,22 @@ namespace SquirrelRun
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 squirrel.image = Content.Load<Texture2D>("squirrel_left");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 squirrel.image = Content.Load<Texture2D>("squirrel_right");
+                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
 
@@ -228,6 +253,30 @@ namespace SquirrelRun
 
         }
 
+        public void Lives()
+        {
+             
+        }
+
+        public void Scoring()
+        {
+            
+        }
+
+        void carCode()
+        {
+            if (squirrel.bBox.Intersects(car.bBox))
+            {
+                
+                
+            }
+        }
+
+        void SquirrelDeath()
+        {
+            lives--;
+            
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -243,7 +292,9 @@ namespace SquirrelRun
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            //draw so that we can visibly see the sprites on the screen.
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
+            spriteBatch.Draw(car.image, car.rect, Color.White);
 
             spriteBatch.End();
             base.Draw(gameTime);
