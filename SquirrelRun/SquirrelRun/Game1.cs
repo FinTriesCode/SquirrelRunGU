@@ -36,11 +36,10 @@ namespace SquirrelRun
         Vector3 carEndPos = Vector3.Zero;
 
 
-        float car2Speed = 4.5f;
+        float car2Speed = 2.5f;
         Vector3 car2SpawnPos = Vector3.Zero;
         Vector3 car2EndPos = Vector3.Zero;
 
-        //Vector3 startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
         Vector3 startingPosition = Vector3.Zero;
 
 
@@ -164,11 +163,14 @@ namespace SquirrelRun
             //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
+
+            //Right to left for car 1
             carSpawnPos = new Vector3(displayWidth - 50, displayHeight / 2, 0); //set car spawn position
             carEndPos = new Vector3(-40, displayHeight / 2, 0); // set car end position
 
-            car2SpawnPos = new Vector3(displayWidth + 100, displayHeight / 2 - 30, 0); //set car spawn position
-            car2EndPos = new Vector3(displayWidth, displayHeight / 2, 0); // set car end position
+            //Left to right for car 2
+            car2SpawnPos = new Vector3(0, displayHeight / 2 + 150, 0); //set car spawn position
+            car2EndPos = new Vector3(displayWidth, displayHeight / 2 + 150, 0); // set car end position
 
             car.position = carSpawnPos;
             car2.position = car2SpawnPos;
@@ -219,7 +221,6 @@ namespace SquirrelRun
 
             //set car bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
-
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
 
             //player movement
@@ -324,7 +325,7 @@ namespace SquirrelRun
                 SquirrelDeath();
             }
 
-            car2.position.X += car2Speed; //move car to left automatically
+            car2.position.X += car2Speed; //move car to right automatically
 
             if (car2.position.X == car2EndPos.X) //if car position is equal to car end position
             {
@@ -352,7 +353,7 @@ namespace SquirrelRun
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.LightGreen);
 
 
 
