@@ -294,16 +294,6 @@ namespace SquirrelRun
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
 
-
-          
-           
-
-            acorn.rect.X = (int)acorn.position.X;
-            acorn.rect.Y = (int)acorn.position.Y;
-            Content.Load<Texture2D>("acorn"); 
-
-            acorn.bBox = new BoundingBox(new Vector3(acorn.position.X - acorn.rect.Width / 2, acorn.position.Y - acorn.rect.Height / 2, 0), new Vector3(acorn.position.X + acorn.rect.Width / 2, acorn.position.Y + acorn.rect.Height / 2, 0));
-
             //set logs bounding box
             log.bBox = new BoundingBox(new Vector3(log.position.X - log.rect.Width / 2, log.position.Y - log.rect.Height / 2, 0), new Vector3(log.position.X + log.rect.Width / 2, log.position.Y + log.rect.Height / 2, 0));
 
