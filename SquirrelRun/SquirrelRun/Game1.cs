@@ -25,7 +25,8 @@ namespace SquirrelRun
         Sprite2D car2;
         SpriteFont font;
         Sprite2D acorn;
-
+        Sprite2D log;
+        Sprite2D nessie;
 
 
         int lives = 5;
@@ -41,6 +42,14 @@ namespace SquirrelRun
         float car2Speed = 2.5f;
         Vector3 car2SpawnPos = Vector3.Zero;
         Vector3 car2EndPos = Vector3.Zero;
+
+        float logSpeed = 2.5f;
+        Vector3 logSpawnPos = Vector3.Zero;
+        Vector3 logEndPos = Vector3.Zero;
+
+        float nessieSpeed = 2f;
+        Vector3 nessieSpawnPos = Vector3.Zero;
+        Vector3 nessieEndPos = Vector3.Zero;
 
         Vector3 startingPosition = Vector3.Zero;
 
@@ -165,7 +174,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -194,10 +203,24 @@ namespace SquirrelRun
 
             acorn = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
 
+            log = new Sprite2D(Content, "log", 0.4f, 5f, false);
+
+            nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
+
             //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
             acorn.position = new Vector3(displayWidth / 2 - acorn.image.Width, displayHeight / 2  - acorn.image.Height, 0);
+
+            logSpawnPos = new Vector3(displayWidth - 50, 100, 0);
+            logEndPos = new Vector3(-40, 100, 0);
+
+            log.position = logSpawnPos;
+
+            nessieSpawnPos = new Vector3(displayWidth - 50, 300, 0);
+            nessieEndPos = new Vector3(-40, 300, 0);
+
+            nessie.position = nessieSpawnPos;
 
             //Right to left for car 1
             carSpawnPos = new Vector3(displayWidth - 50, displayHeight / 2, 0); //set car spawn position
@@ -253,6 +276,16 @@ namespace SquirrelRun
             car2.rect.Y = (int)car2.position.Y;
             Content.Load<Texture2D>("car");
 
+            //setting logs position
+            log.rect.X = (int)log.position.X;
+            log.rect.Y = (int)log.position.Y;
+            Content.Load<Texture2D>("log");
+
+            //setting nessie postion
+            nessie.rect.X = (int)nessie.position.X;
+            nessie.rect.Y = (int)nessie.position.Y;
+            Content.Load<Texture2D>("nessie");
+
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
@@ -262,13 +295,20 @@ namespace SquirrelRun
             Content.Load<Texture2D>("acorn"); 
 
             acorn.bBox = new BoundingBox(new Vector3(acorn.position.X - acorn.rect.Width / 2, acorn.position.Y - acorn.rect.Height / 2, 0), new Vector3(acorn.position.X + acorn.rect.Width / 2, acorn.position.Y + acorn.rect.Height / 2, 0));
-           
+
+            //set logs bounding box
+            log.bBox = new BoundingBox(new Vector3(log.position.X - log.rect.Width / 2, log.position.Y - log.rect.Height / 2, 0), new Vector3(log.position.X + log.rect.Width / 2, log.position.Y + log.rect.Height / 2, 0));
+
+            //set nessie bounding box
+            nessie.bBox = new BoundingBox(new Vector3(nessie.position.X - nessie.rect.Width / 2, nessie.position.Y - nessie.rect.Height / 2, 0), new Vector3(nessie.position.X + nessie.rect.Width / 2, nessie.position.Y + nessie.rect.Height / 2, 0));
 
             //custom functions
             PlayerMovement();
             CarCode();
             Car2Code();
-            Acorn(); 
+            Acorn();
+            logCode();
+            nessieCode();
 
             base.Update(gameTime);
         }
@@ -383,6 +423,34 @@ namespace SquirrelRun
             }
         }
 
+        void logCode()
+        {
+
+            log.position.X -= logSpeed; //move car to left automatically
+
+            if (log.position.X == logEndPos.X) //if car position is equal to car end position
+            {
+                log.position.X = logSpawnPos.X; //car positon 'resets' to car spawn position
+            }
+
+
+
+        }
+
+        void nessieCode()
+        {
+
+            nessie.position.X -= nessieSpeed; //move car to left automatically
+
+            if (nessie.position.X == nessieEndPos.X) //if car position is equal to car end position
+            {
+                nessie.position.X = nessieSpawnPos.X; //car positon 'resets' to car spawn position
+            }
+
+
+
+        }
+
         void SquirrelDeath()
         {
             lives--;
@@ -415,6 +483,9 @@ namespace SquirrelRun
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
             spriteBatch.Draw(car.image, car.rect, Color.White);
             spriteBatch.Draw(car2.image, car2.rect, Color.White);
+            spriteBatch.Draw(log.image, log.rect, Color.White);
+            spriteBatch.Draw(nessie.image, nessie.rect, Color.White);
+
 
             //display font of lives and score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
