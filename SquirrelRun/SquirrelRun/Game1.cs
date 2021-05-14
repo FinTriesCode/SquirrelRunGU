@@ -24,13 +24,12 @@ namespace SquirrelRun
         Sprite2D car;
         Sprite2D car2;
         SpriteFont font;
-        Sprite2D acorn;
-
-
+        Sprite2D[] acorns = new Sprite2D[5];
 
         int lives = 5;
         int score = 0;
         int displayHeight, displayWidth;
+        int acornArrayPos = 0;
         bool gameOver = false;
 
         float carSpeed = 2.5f;
@@ -54,20 +53,9 @@ namespace SquirrelRun
 
 
         //nuts array
-        Vector3[] Nuts = new Vector3[6];
-
-        public void AddToNuts()
-        {
-            Nuts[0] = new Vector3(10, 10, 0);
-            Nuts[1] = new Vector3(20, 20, 0);
-            Nuts[2] = new Vector3(10, 10, 0);
-        }
+        Vector3[] nutsPosition = new Vector3[6];
         
-
-        
-       
-
-
+   
 
         struct Sprite2D
         {
@@ -165,7 +153,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -192,12 +180,25 @@ namespace SquirrelRun
             car = new Sprite2D(Content, "car", 0.4f, 5f, false);           
             car2 = new Sprite2D(Content, "car", 0.4f, 5f, false);
 
-            acorn = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
+            nutsPosition[0] = new Vector3(10, 10, 0);
+            nutsPosition[1] = new Vector3(20, 20, 0);
+            nutsPosition[2] = new Vector3(30, 30, 0);
+
+            for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
+            {
+                Content.Load<Texture2D>("acorn");
+                acorns[acornArrayPos] = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
+                acorns[acornArrayPos].position = new Vector3(displayWidth / 2 - acorns[acornArrayPos].image.Width, displayHeight / 2 - acorns[acornArrayPos].image.Height, 0);
+                acorns[acornArrayPos].rect.X = (int)acorns[acornArrayPos].position.X;
+                acorns[acornArrayPos].rect.Y = (int)acorns[acornArrayPos].position.Y;
+                acorns[acornArrayPos].bBox = new BoundingBox(new Vector3(acorns[acornArrayPos].position.X - acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y - acorns[acornArrayPos].rect.Height / 2, 0), new Vector3(acorns[acornArrayPos].position.X + acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y + acorns[acornArrayPos].rect.Height / 2, 0));
+            }
+           
 
             //applying starting squirrel position
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
-            acorn.position = new Vector3(displayWidth / 2 - acorn.image.Width, displayHeight / 2  - acorn.image.Height, 0);
+           
 
             //Right to left for car 1
             carSpawnPos = new Vector3(displayWidth - 50, displayHeight / 2, 0); //set car spawn position
@@ -257,18 +258,14 @@ namespace SquirrelRun
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
 
-            acorn.rect.X = (int)acorn.position.X;
-            acorn.rect.Y = (int)acorn.position.Y;
-            Content.Load<Texture2D>("acorn"); 
-
-            acorn.bBox = new BoundingBox(new Vector3(acorn.position.X - acorn.rect.Width / 2, acorn.position.Y - acorn.rect.Height / 2, 0), new Vector3(acorn.position.X + acorn.rect.Width / 2, acorn.position.Y + acorn.rect.Height / 2, 0));
+          
            
 
             //custom functions
             PlayerMovement();
             CarCode();
             Car2Code();
-            Acorn(); 
+            AcornCollision(); 
 
             base.Update(gameTime);
         }
@@ -331,7 +328,7 @@ namespace SquirrelRun
 
         public void Lives()
         {
-             if (lives <= 0)
+            if (lives <= 0)
             {
                 gameOver = true;
             }               
@@ -340,13 +337,17 @@ namespace SquirrelRun
         
 
 
-        void Acorn()
+        public void AcornCollision()
         {
-            if (squirrel.bBox.Intersects(acorn.bBox) && acorn.visible == true)
+            for (int i = 0; i < acorns.Length; i++)
             {
-                score++;
-                acorn.visible = false; 
+                if (squirrel.bBox.Intersects(acorns[i].bBox) && acorns[i].visible == true)
+                {
+                    score++;
+                    acorns[i].visible = false;
+                }
             }
+  
         }
        
 
@@ -420,12 +421,15 @@ namespace SquirrelRun
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
 
-            
-
-            if (acorn.visible == true)
+            for (int acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {
-                spriteBatch.Draw(acorn.image, acorn.rect, Color.White);
+                if (acorns[acornArrayPos].visible == true)
+                {
+                    spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
+                }
             }
+
+
 
             spriteBatch.End();
             base.Draw(gameTime);
