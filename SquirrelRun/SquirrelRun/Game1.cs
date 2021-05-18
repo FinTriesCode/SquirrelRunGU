@@ -27,7 +27,8 @@ namespace SquirrelRun
         Sprite2D[] acorns = new Sprite2D[5];
         Sprite2D log;
         Sprite2D nessie;
-
+        Sprite2D river;
+        Sprite2D riverTwo;
 
 
         int lives = 5;
@@ -191,6 +192,8 @@ namespace SquirrelRun
 
             car = new Sprite2D(Content, "car", 0.4f, 5f, false);           
             car2 = new Sprite2D(Content, "car", 0.4f, 5f, false);
+            river = new Sprite2D(Content, "river", 0.4f, 5f, false);
+            riverTwo = new Sprite2D(Content, "river", 0.4f, 5f, false);
 
             nutsPosition[0] = new Vector3(10, 10, 0);
             nutsPosition[1] = new Vector3(20, 20, 0);
@@ -221,8 +224,8 @@ namespace SquirrelRun
 
             log.position = logSpawnPos;
 
-            nessieSpawnPos = new Vector3(displayWidth - 50, 300, 0);
-            nessieEndPos = new Vector3(-40, 300, 0);
+            nessieSpawnPos = new Vector3(0, 20, 0);
+            nessieEndPos = new Vector3(displayWidth, 20, 0);
 
             nessie.position = nessieSpawnPos;
 
@@ -236,8 +239,11 @@ namespace SquirrelRun
 
             car.position = carSpawnPos;
             car2.position = car2SpawnPos;
+
+            river.position.Y = log.position.Y;
+            riverTwo.position.Y = nessie.position.Y;
             //so that when car reaches end postion, it will reset to car spawn position
-            
+
         }
 
         /// <summary>
@@ -290,6 +296,14 @@ namespace SquirrelRun
             nessie.rect.Y = (int)nessie.position.Y;
             Content.Load<Texture2D>("nessie");
 
+            river.rect.X = (int)river.position.X;
+            river.rect.Y = (int)river.position.Y;
+            Content.Load<Texture2D>("river");
+
+            riverTwo.rect.X = (int)riverTwo.position.X;
+            riverTwo.rect.Y = (int)riverTwo.position.Y;
+            Content.Load<Texture2D>("river");
+
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             car2.bBox = new BoundingBox(new Vector3(car2.position.X - car2.rect.Width / 2, car2.position.Y - car2.rect.Height / 2, 0), new Vector3(car2.position.X + car2.rect.Width / 2, car2.position.Y + car2.rect.Height / 2, 0));
@@ -300,6 +314,8 @@ namespace SquirrelRun
             //set nessie bounding box
             nessie.bBox = new BoundingBox(new Vector3(nessie.position.X - nessie.rect.Width / 2, nessie.position.Y - nessie.rect.Height / 2, 0), new Vector3(nessie.position.X + nessie.rect.Width / 2, nessie.position.Y + nessie.rect.Height / 2, 0));
 
+            river.bBox = new BoundingBox(new Vector3(river.position.X - river.rect.Width / 2, river.position.Y - river.rect.Height / 2, 0), new Vector3(river.position.X + river.rect.Width / 2, river.position.Y + river.rect.Height / 2, 0));
+            riverTwo.bBox = new BoundingBox(new Vector3(riverTwo.position.X - riverTwo.rect.Width / 2, riverTwo.position.Y - riverTwo.rect.Height / 2, 0), new Vector3(riverTwo.position.X + riverTwo.rect.Width / 2, riverTwo.position.Y + riverTwo.rect.Height / 2, 0));
 
             //custom functions
             PlayerMovement();
@@ -308,6 +324,7 @@ namespace SquirrelRun
             AcornCollision(); 
             logCode();
             nessieCode();
+            WaterCode();
 
 
             base.Update(gameTime);
@@ -364,9 +381,6 @@ namespace SquirrelRun
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
-
-           
-
         }
 
         public void Lives()
@@ -390,7 +404,6 @@ namespace SquirrelRun
                     acorns[i].visible = false;
                 }
             }
-  
         }
        
 
@@ -407,9 +420,6 @@ namespace SquirrelRun
             {
                 car.position.X = carSpawnPos.X; //car positon 'resets' to car spawn position
             }
-
-          
-
         }
 
         void Car2Code()
@@ -440,14 +450,12 @@ namespace SquirrelRun
             {
                 squirrel.position.X = log.position.X;
             }
-
-
         }
 
         void nessieCode()
         {
 
-            nessie.position.X -= nessieSpeed; //move car to left automatically
+            nessie.position.X += nessieSpeed; //move car to left automatically
 
             if (nessie.position.X == nessieEndPos.X) //if car position is equal to car end position
             {
@@ -457,10 +465,18 @@ namespace SquirrelRun
             {
                 squirrel.position.X = nessie.position.X;
             }
+        }
 
-
-
-
+        void WaterCode()
+        {
+            if(squirrel.bBox.Intersects(river.bBox) && !squirrel.bBox.Intersects(log.bBox))
+            {
+                SquirrelDeath();
+            }
+            if (squirrel.bBox.Intersects(riverTwo.bBox) && !squirrel.bBox.Intersects(nessie.bBox))
+            {
+                SquirrelDeath();
+            }
         }
 
         void SquirrelDeath()
@@ -492,7 +508,9 @@ namespace SquirrelRun
             spriteBatch.Begin();
 
             //draw so that we can visibly see the sprites on the screen.
-           
+
+            spriteBatch.Draw(river.image, river.rect, Color.Blue);
+            spriteBatch.Draw(riverTwo.image, riverTwo.rect, Color.Blue);
             spriteBatch.Draw(car.image, car.rect, Color.White);
             spriteBatch.Draw(car2.image, car2.rect, Color.White);
             spriteBatch.Draw(log.image, log.rect, Color.White);
