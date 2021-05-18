@@ -436,7 +436,10 @@ namespace SquirrelRun
             {
                 log.position.X = logSpawnPos.X; //car positon 'resets' to car spawn position
             }
-
+            if (log.bBox.Intersects(squirrel.bBox))
+            {
+                squirrel.position.X = log.position.X;
+            }
 
 
         }
@@ -450,6 +453,11 @@ namespace SquirrelRun
             {
                 nessie.position.X = nessieSpawnPos.X; //car positon 'resets' to car spawn position
             }
+            if (nessie.bBox.Intersects(squirrel.bBox))
+            {
+                squirrel.position.X = nessie.position.X;
+            }
+
 
 
 
@@ -484,12 +492,12 @@ namespace SquirrelRun
             spriteBatch.Begin();
 
             //draw so that we can visibly see the sprites on the screen.
-            spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
+           
             spriteBatch.Draw(car.image, car.rect, Color.White);
             spriteBatch.Draw(car2.image, car2.rect, Color.White);
             spriteBatch.Draw(log.image, log.rect, Color.White);
             spriteBatch.Draw(nessie.image, nessie.rect, Color.White);
-
+            spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
 
             //display font of lives and score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
