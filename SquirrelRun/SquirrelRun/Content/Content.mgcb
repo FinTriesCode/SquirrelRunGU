@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../../HND Computer Games Development/Semester 2/Graded Unit/Art/Prototype Assets/river.png;river.png
 
+#begin ../../../../../../HND Computer Games Development/Semester 2/Graded Unit/Art/Prototype Assets/road.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../../../../HND Computer Games Development/Semester 2/Graded Unit/Art/Prototype Assets/road.png;road.png
+
 #begin acorn.png
 /importer:TextureImporter
 /processor:TextureProcessor
