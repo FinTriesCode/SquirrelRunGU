@@ -195,17 +195,20 @@ namespace SquirrelRun
             river = new Sprite2D(Content, "river", 0.4f, 5f, false);
             riverTwo = new Sprite2D(Content, "river", 0.4f, 5f, false);
 
-            nutsPosition[0] = new Vector3(10, 10, 0);
-            nutsPosition[1] = new Vector3(20, 20, 0);
-            nutsPosition[2] = new Vector3(30, 30, 0);
+            nutsPosition[0] = new Vector3(displayWidth / 2, 250f, 0);
+            nutsPosition[1] = new Vector3(100, 100, 0);
+            nutsPosition[2] = new Vector3(100, 300, 0);
+            nutsPosition[3] = new Vector3(150, 250, 0);
+            nutsPosition[4] = new Vector3(300, 300, 0);
 
             for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {
                 Content.Load<Texture2D>("acorn");
                 acorns[acornArrayPos] = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
-                acorns[acornArrayPos].position = new Vector3(displayWidth / 2 - acorns[acornArrayPos].image.Width, displayHeight / 2 - acorns[acornArrayPos].image.Height, 0);
-                acorns[acornArrayPos].rect.X = (int)acorns[acornArrayPos].position.X;
-                acorns[acornArrayPos].rect.Y = (int)acorns[acornArrayPos].position.Y;
+
+                acorns[acornArrayPos].rect.X = (int)nutsPosition[acornArrayPos].X;
+                acorns[acornArrayPos].rect.Y = (int)nutsPosition[acornArrayPos].Y;
+                acorns[acornArrayPos].position = new Vector3(nutsPosition[acornArrayPos].X, nutsPosition[acornArrayPos].Y, 0);
                 acorns[acornArrayPos].bBox = new BoundingBox(new Vector3(acorns[acornArrayPos].position.X - acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y - acorns[acornArrayPos].rect.Height / 2, 0), new Vector3(acorns[acornArrayPos].position.X + acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y + acorns[acornArrayPos].rect.Height / 2, 0));
             }
            
