@@ -46,7 +46,7 @@ namespace SquirrelRun
         Vector3 car2SpawnPos = Vector3.Zero;
         Vector3 car2EndPos = Vector3.Zero;
 
-        float logSpeed = 2.5f;
+        float logSpeed = 2f;
         Vector3 logSpawnPos = Vector3.Zero;
         Vector3 logEndPos = Vector3.Zero;
 
@@ -166,7 +166,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            //graphics.ToggleFullScreen();
+            graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -184,7 +184,7 @@ namespace SquirrelRun
 
             //sprite variables and calling 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            squirrel = new Sprite2D(Content, "squirrel", 0.4f, 5f, false);
+            squirrel = new Sprite2D(Content, "squirrel", 0.2f, 5f, false);
             squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
 
@@ -218,14 +218,15 @@ namespace SquirrelRun
             squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
            
-
-            logSpawnPos = new Vector3(displayWidth - 50, 100, 0);
-            logEndPos = new Vector3(-40, 100, 0);
+            //Sets position for bottom river
+            logSpawnPos = new Vector3(displayWidth - 50, 200, 0);
+            logEndPos = new Vector3(-40, 200, 0);
 
             log.position = logSpawnPos;
 
-            nessieSpawnPos = new Vector3(0, 20, 0);
-            nessieEndPos = new Vector3(displayWidth, 20, 0);
+            //Sets position for top river
+            nessieSpawnPos = new Vector3(0, 80, 0);
+            nessieEndPos = new Vector3(displayWidth, 80, 0);
 
             nessie.position = nessieSpawnPos;
 
