@@ -39,12 +39,12 @@ namespace SquirrelRun
         int acornArrayPos = 0;
         bool gameOver = false;
 
-        float carSpeed = 2.5f;
+        float carSpeed = 3f;
         Vector3 carSpawnPos = Vector3.Zero;
         Vector3 carEndPos = Vector3.Zero;
 
 
-        float car2Speed = 2.5f;
+        float car2Speed = 3f;
         Vector3 car2SpawnPos = Vector3.Zero;
         Vector3 car2EndPos = Vector3.Zero;
 
@@ -152,7 +152,6 @@ namespace SquirrelRun
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
         }
 
         /// <summary>
@@ -192,30 +191,14 @@ namespace SquirrelRun
 
             startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
-            car = new Sprite2D(Content, "car", 0.4f, 5f, false);           
-            carTwo = new Sprite2D(Content, "car", 0.4f, 5f, false);
+            car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
+            carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river", 0.4f, 5f, false);
             riverTwo = new Sprite2D(Content, "river", 0.4f, 5f, false);
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
 
-            nutsPosition[0] = new Vector3(displayWidth / 2, 250f, 0);
-            nutsPosition[1] = new Vector3(100, 100, 0);
-            nutsPosition[2] = new Vector3(100, 300, 0);
-            nutsPosition[3] = new Vector3(150, 250, 0);
-            nutsPosition[4] = new Vector3(300, 300, 0);
-
-            for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
-            {
-                Content.Load<Texture2D>("acorn");
-                acorns[acornArrayPos] = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
-
-                acorns[acornArrayPos].rect.X = (int)nutsPosition[acornArrayPos].X;
-                acorns[acornArrayPos].rect.Y = (int)nutsPosition[acornArrayPos].Y;
-                acorns[acornArrayPos].position = new Vector3(nutsPosition[acornArrayPos].X, nutsPosition[acornArrayPos].Y, 0);
-                acorns[acornArrayPos].bBox = new BoundingBox(new Vector3(acorns[acornArrayPos].position.X - acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y - acorns[acornArrayPos].rect.Height / 2, 0), new Vector3(acorns[acornArrayPos].position.X + acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y + acorns[acornArrayPos].rect.Height / 2, 0));
-            }
-           
+            NutSpawningCode();
 
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
 
@@ -313,8 +296,6 @@ namespace SquirrelRun
 
             riverTwo.rect.X = (int)riverTwo.position.X;
             riverTwo.rect.Y = (int)riverTwo.position.Y;
-            Content.Load<Texture2D>("river");
-
 
             road.rect.X = (int)road.position.X;
             road.rect.Y = (int)road.position.Y;
@@ -322,7 +303,6 @@ namespace SquirrelRun
 
             roadTwo.rect.X = (int)roadTwo.position.X;
             roadTwo.rect.Y = (int)roadTwo.position.Y;
-            Content.Load<Texture2D>("road");
 
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
@@ -358,14 +338,12 @@ namespace SquirrelRun
         {   //controls for pro gamers
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-
                 squirrel.image = Content.Load<Texture2D>("Squirrel");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size); 
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
                 //press w and update the sprite to the forward version of the original sprite
-                
-
+               
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
@@ -414,9 +392,6 @@ namespace SquirrelRun
             }               
         }
 
-        
-
-
         public void AcornCollision()
         {
             for (int i = 0; i < acorns.Length; i++)
@@ -429,20 +404,13 @@ namespace SquirrelRun
             }
         }
        
-
         void CarCode()
         {
-            if (squirrel.bBox.Intersects(car.bBox))
-            {
-                SquirrelDeath();               
-            }
+            if (squirrel.bBox.Intersects(car.bBox)) SquirrelDeath();               
 
             car.position.X -= carSpeed; //move car to left automatically
-
-            if(car.position.X == carEndPos.X) //if car position is equal to car end position
-            {
-                car.position.X = carSpawnPos.X; //car positon 'resets' to car spawn position
-            }
+           
+            if(car.position.X == carEndPos.X)  car.position.X = carSpawnPos.X; //if car position is equal to car end position car positon 'resets' to car spawn position
         }
 
         void Car2Code()
@@ -478,11 +446,11 @@ namespace SquirrelRun
         void nessieCode()
         {
 
-            nessie.position.X += nessieSpeed; //move car to left automatically
+            nessie.position.X += nessieSpeed; //move nessie to right automatically
 
-            if (nessie.position.X == nessieEndPos.X) //if car position is equal to car end position
+            if (nessie.position.X == nessieEndPos.X) //if nessie position is equal to nessie end position
             {
-                nessie.position.X = nessieSpawnPos.X; //car positon 'resets' to car spawn position
+                nessie.position.X = nessieSpawnPos.X; //nessie positon 'resets' to nessie spawn position
             }
             if (nessie.bBox.Intersects(squirrel.bBox))
             {
@@ -516,6 +484,26 @@ namespace SquirrelRun
             }
         }
 
+        void NutSpawningCode()
+        {
+            nutsPosition[0] = new Vector3(displayWidth / 2, 250f, 0);
+            nutsPosition[1] = new Vector3(100, 100, 0);
+            nutsPosition[2] = new Vector3(100, 300, 0);
+            nutsPosition[3] = new Vector3(150, 250, 0);
+            nutsPosition[4] = new Vector3(300, 300, 0);
+
+            for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
+            {
+                Content.Load<Texture2D>("acorn");
+                acorns[acornArrayPos] = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
+
+                acorns[acornArrayPos].rect.X = (int)nutsPosition[acornArrayPos].X;
+                acorns[acornArrayPos].rect.Y = (int)nutsPosition[acornArrayPos].Y;
+                acorns[acornArrayPos].position = new Vector3(nutsPosition[acornArrayPos].X, nutsPosition[acornArrayPos].Y, 0);
+                acorns[acornArrayPos].bBox = new BoundingBox(new Vector3(acorns[acornArrayPos].position.X - acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y - acorns[acornArrayPos].rect.Height / 2, 0), new Vector3(acorns[acornArrayPos].position.X + acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y + acorns[acornArrayPos].rect.Height / 2, 0));
+            }
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -524,14 +512,10 @@ namespace SquirrelRun
         {
             GraphicsDevice.Clear(Color.LightGreen);
 
-
-
-
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             //draw so that we can visibly see the sprites on the screen.
-
             spriteBatch.Draw(road.image, road.rect, Color.White);
             spriteBatch.Draw(roadTwo.image, roadTwo.rect, Color.White);
             spriteBatch.Draw(river.image, river.rect, Color.Blue);
@@ -553,9 +537,6 @@ namespace SquirrelRun
                     spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
                 }
             }
-
-
-
             spriteBatch.End();
             base.Draw(gameTime);
         }
