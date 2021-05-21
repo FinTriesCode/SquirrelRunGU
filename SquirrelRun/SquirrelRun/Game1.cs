@@ -312,7 +312,7 @@ namespace SquirrelRun
 
             GameOverImage.rect.X = (int)GameOverImage.position.X;
             GameOverImage.rect.Y = (int)GameOverImage.position.Y;
-            Content.Load<Texture2D>("GameOverImage");
+            //Content.Load<Texture2D>("GameOverImage");
 
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
@@ -338,6 +338,7 @@ namespace SquirrelRun
             logCode();
             nessieCode();
             WaterCode();
+            ScreenCollisions();
 
             if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
@@ -524,6 +525,21 @@ namespace SquirrelRun
                 acorns[i].visible = true;                
             }
             gameOver = false;
+        }
+
+        void ScreenCollisions()
+        {
+            //Left
+            if (squirrel.position.X <= 0)
+            {
+                squirrel.position.X = 0;
+            }
+
+            //Right
+            if(squirrel.position.X >= displayWidth)
+            {
+                squirrel.position.X = displayWidth;
+            }
         }
 
         /// <summary>
