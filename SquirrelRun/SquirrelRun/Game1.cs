@@ -31,6 +31,7 @@ namespace SquirrelRun
         Sprite2D riverTwo;
         Sprite2D road;
         Sprite2D roadTwo;
+        Sprite2D GameOverImage;
 
 
         int lives = 5;
@@ -57,6 +58,8 @@ namespace SquirrelRun
         Vector3 nessieEndPos = Vector3.Zero;
 
         Vector3 startingPosition = Vector3.Zero;
+
+        
 
 
         public void Random()
@@ -198,6 +201,9 @@ namespace SquirrelRun
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
 
+
+            //GameOverImage = new Graphic2D(Content, "GameOverImage", displayWidth, displayHeight); 
+
             NutSpawningCode();
 
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
@@ -304,6 +310,10 @@ namespace SquirrelRun
             roadTwo.rect.X = (int)roadTwo.position.X;
             roadTwo.rect.Y = (int)roadTwo.position.Y;
 
+            GameOverImage.rect.X = (int)GameOverImage.position.X;
+            GameOverImage.rect.Y = (int)GameOverImage.position.Y;
+            Content.Load<Texture2D>("GameOverImage");
+
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             carTwo.bBox = new BoundingBox(new Vector3(carTwo.position.X - carTwo.rect.Width / 2, carTwo.position.Y - carTwo.rect.Height / 2, 0), new Vector3(carTwo.position.X + carTwo.rect.Width / 2, carTwo.position.Y + carTwo.rect.Height / 2, 0));
@@ -329,6 +339,11 @@ namespace SquirrelRun
             nessieCode();
             WaterCode();
 
+            if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                Restart();
+            }
+            //add a win version of the code above
 
             base.Update(gameTime);
         }
@@ -476,13 +491,7 @@ namespace SquirrelRun
             squirrel.position = startingPosition;
         }
 
-        void GameOver()
-        {
-            if (gameOver == true)
-            {
-                //do later
-            }
-        }
+       
 
         void NutSpawningCode()
         {
@@ -502,6 +511,19 @@ namespace SquirrelRun
                 acorns[acornArrayPos].position = new Vector3(nutsPosition[acornArrayPos].X, nutsPosition[acornArrayPos].Y, 0);
                 acorns[acornArrayPos].bBox = new BoundingBox(new Vector3(acorns[acornArrayPos].position.X - acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y - acorns[acornArrayPos].rect.Height / 2, 0), new Vector3(acorns[acornArrayPos].position.X + acorns[acornArrayPos].rect.Width / 2, acorns[acornArrayPos].position.Y + acorns[acornArrayPos].rect.Height / 2, 0));
             }
+        }
+
+        void Restart()
+        {
+            lives = 5;
+            score = 0;
+            squirrel.position = startingPosition;
+
+            for (int i = 0; i < acorns.Length; i++)
+            {
+                acorns[i].visible = true;                
+            }
+            gameOver = false;
         }
 
         /// <summary>
@@ -525,6 +547,7 @@ namespace SquirrelRun
             spriteBatch.Draw(log.image, log.rect, Color.White);
             spriteBatch.Draw(nessie.image, nessie.rect, Color.White);
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
+            //spriteBatch.Draw(GameOver.image, squirrel.rect, Color.White);
 
             //display font of lives and score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
@@ -537,6 +560,13 @@ namespace SquirrelRun
                     spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
                 }
             }
+                      
+           if (gameOver == true)
+           {
+                spriteBatch.Draw(GameOverImage.image, GameOverImage.rect, Color.White);
+           }
+            
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
