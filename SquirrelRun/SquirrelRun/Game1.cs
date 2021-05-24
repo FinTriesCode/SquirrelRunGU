@@ -163,45 +163,36 @@ namespace SquirrelRun
          protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //sprite variables and calling 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             squirrel = new Sprite2D(Content, "red_squirrel_front", 0.4f, 4f, false);
             squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.4f, 5f, false);
             squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 5f, false);
-
-            squirrelStartPos = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
-
             car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river", 0.4f, 5f, false);
             riverTwo = new Sprite2D(Content, "river", 0.4f, 5f, false);
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
-
-
+            log = new Sprite2D(Content, "log", 0.4f, 5f, false);
+            nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
             //GameOverImage = new Graphic2D(Content, "GameOverImage", displayWidth, displayHeight); 
 
             NutSpawningCode();
-
-            log = new Sprite2D(Content, "log", 0.4f, 5f, false);
-
-            nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
-
+  
             //applying starting squirrel position
-            squirrel.position = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            squirrelStartPos = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            squirrel.position = squirrelStartPos;
 
-           
             //Sets position for bottom river
             logSpawnPos = new Vector3(displayWidth - 50, 200, 0);
             logEndPos = new Vector3(-40, 200, 0);
-
             log.position = logSpawnPos;
 
             //Sets position for top river
             nessieSpawnPos = new Vector3(0, 80, 0);
             nessieEndPos = new Vector3(displayWidth, 80, 0);
-
             nessie.position = nessieSpawnPos;
 
             //Right to left for car 1
@@ -220,7 +211,6 @@ namespace SquirrelRun
 
             road.position.Y = car.position.Y;
             roadTwo.position.Y = carTwo.position.Y;
-            //so that when car reaches end postion, it will reset to car spawn position
 
         }
 
@@ -252,7 +242,6 @@ namespace SquirrelRun
 
             //set squirrel bounding box
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
-
 
             //setting car position
             car.rect.X = (int)car.position.X;
@@ -353,7 +342,6 @@ namespace SquirrelRun
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
-
             //arrow keys for Marion
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
@@ -378,14 +366,14 @@ namespace SquirrelRun
             }
         }
 
-
         public void DisplayGameOver()
         {
             if (lives <= 0) gameOver = true;           
         }
 
+        //For every acorn, check if it's collided with the squirrel, if it's visible make it invisible and increase score.
         public void AcornCollision()
-        {
+        {        
             for (int i = 0; i < acorns.Length; i++)
             {
                 if (squirrel.bBox.Intersects(acorns[i].bBox) && acorns[i].visible == true)
@@ -407,10 +395,7 @@ namespace SquirrelRun
 
         void Car2Logic()
         {
-            if (squirrel.bBox.Intersects(carTwo.bBox))
-            {
-                SquirrelDeath();
-            }
+            if (squirrel.bBox.Intersects(carTwo.bBox))  SquirrelDeath();
 
             carTwo.position.X += car2Speed; //move car to right automatically
 
@@ -467,7 +452,6 @@ namespace SquirrelRun
             lives--;
             squirrel.position = squirrelStartPos;
         }
-
        
         void NutSpawningCode()
         {
@@ -504,16 +488,9 @@ namespace SquirrelRun
         void ScreenCollisions()
         {
             //Left
-            if (squirrel.position.X <= 0)
-            {
-                squirrel.position.X = 0;
-            }
-
+            if (squirrel.position.X <= 0) squirrel.position.X = 0;
             //Right
-            if(squirrel.position.X >= displayWidth)
-            {
-                squirrel.position.X = displayWidth;
-            }
+            if(squirrel.position.X >= displayWidth) squirrel.position.X = displayWidth;
         }
 
         /// <summary>
