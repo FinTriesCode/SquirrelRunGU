@@ -57,7 +57,7 @@ namespace SquirrelRun
         Vector3 nessieSpawnPos = Vector3.Zero;
         Vector3 nessieEndPos = Vector3.Zero;
 
-        Vector3 startingPosition = Vector3.Zero;
+        Vector3 squirrelStartPos = Vector3.Zero;
 
         
 
@@ -129,28 +129,6 @@ namespace SquirrelRun
             }
         }
 
-        
-        //bounding box for water - "will kill player upon contact (yet to code function)"
-        struct Water
-        {                       
-            public Vector3 waterPosition;
-            public BoundingBox waterBBOX;           
-            public float waterSize;
-
-            public Water(ContentManager content, string filename, float sizeratio)
-            {
-                //water bounding box
-                waterSize = sizeratio;
-
-                waterBBOX = new BoundingBox(Vector3.Zero, Vector3.Zero);  //now we need to set the water's position in loadContent using the size of the image/screen and devide the height by 2 and add half the screen's value (making it the top half of the screen)
-                waterPosition = Vector3.Zero;                
-
-            }
-        
-        }
-    
-
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -188,11 +166,11 @@ namespace SquirrelRun
 
             //sprite variables and calling 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            squirrel = new Sprite2D(Content, "squirrel", 0.2f, 5f, false);
-            squirrel_right = new Sprite2D(Content, "squirrel_right", 0.4f, 5f, false);
-            squirrel_left = new Sprite2D(Content, "squirrel_left", 0.4f, 5f, false);
+            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.4f, 4f, false);
+            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.4f, 5f, false);
+            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 5f, false);
 
-            startingPosition = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            squirrelStartPos = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
 
             car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
@@ -332,17 +310,17 @@ namespace SquirrelRun
 
             //custom functions
             PlayerMovement();
-            CarCode();
-            Car2Code();
+            CarLogic();
+            Car2Logic();
             AcornCollision(); 
-            logCode();
-            nessieCode();
-            WaterCode();
+            LogLogic();
+            NessieAI();
+            RiverLogic();
             ScreenCollisions();
 
             if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                Restart();
+                RestartGame();
             }
             //add a win version of the code above
 
@@ -354,7 +332,7 @@ namespace SquirrelRun
         {   //controls for pro gamers
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size); 
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
@@ -363,14 +341,14 @@ namespace SquirrelRun
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                squirrel.image = Content.Load<Texture2D>("squirrel_left");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                squirrel.image = Content.Load<Texture2D>("squirrel_right");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
@@ -379,33 +357,31 @@ namespace SquirrelRun
             //arrow keys for Marion
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                squirrel.image = Content.Load<Texture2D>("Squirrel");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                squirrel.image = Content.Load<Texture2D>("squirrel_left");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                squirrel.image = Content.Load<Texture2D>("squirrel_right");
+                squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
                 squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
                 squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
         }
 
-        public void Lives()
+
+        public void DisplayGameOver()
         {
-            if (lives <= 0)
-            {
-                gameOver = true;
-            }               
+            if (lives <= 0) gameOver = true;           
         }
 
         public void AcornCollision()
@@ -420,7 +396,7 @@ namespace SquirrelRun
             }
         }
        
-        void CarCode()
+        void CarLogic()
         {
             if (squirrel.bBox.Intersects(car.bBox)) SquirrelDeath();               
 
@@ -429,7 +405,7 @@ namespace SquirrelRun
             if(car.position.X == carEndPos.X)  car.position.X = carSpawnPos.X; //if car position is equal to car end position car positon 'resets' to car spawn position
         }
 
-        void Car2Code()
+        void Car2Logic()
         {
             if (squirrel.bBox.Intersects(carTwo.bBox))
             {
@@ -444,7 +420,7 @@ namespace SquirrelRun
             }
         }
 
-        void logCode()
+        void LogLogic()
         {
 
             log.position.X -= logSpeed; //move car to left automatically
@@ -459,7 +435,7 @@ namespace SquirrelRun
             }
         }
 
-        void nessieCode()
+        void NessieAI()
         {
 
             nessie.position.X += nessieSpeed; //move nessie to right automatically
@@ -474,7 +450,7 @@ namespace SquirrelRun
             }
         }
 
-        void WaterCode()
+        void RiverLogic()
         {
             if(squirrel.bBox.Intersects(river.bBox) && !squirrel.bBox.Intersects(log.bBox))
             {
@@ -489,11 +465,10 @@ namespace SquirrelRun
         void SquirrelDeath()
         {
             lives--;
-            squirrel.position = startingPosition;
+            squirrel.position = squirrelStartPos;
         }
 
        
-
         void NutSpawningCode()
         {
             nutsPosition[0] = new Vector3(displayWidth / 2, 250f, 0);
@@ -506,7 +481,6 @@ namespace SquirrelRun
             {
                 Content.Load<Texture2D>("acorn");
                 acorns[acornArrayPos] = new Sprite2D(Content, "acorn", 0.4f, 5f, false);
-
                 acorns[acornArrayPos].rect.X = (int)nutsPosition[acornArrayPos].X;
                 acorns[acornArrayPos].rect.Y = (int)nutsPosition[acornArrayPos].Y;
                 acorns[acornArrayPos].position = new Vector3(nutsPosition[acornArrayPos].X, nutsPosition[acornArrayPos].Y, 0);
@@ -514,11 +488,11 @@ namespace SquirrelRun
             }
         }
 
-        void Restart()
+        void RestartGame()
         {
             lives = 5;
             score = 0;
-            squirrel.position = startingPosition;
+            squirrel.position = squirrelStartPos;
 
             for (int i = 0; i < acorns.Length; i++)
             {
@@ -580,9 +554,7 @@ namespace SquirrelRun
            if (gameOver == true)
            {
                 spriteBatch.Draw(GameOverImage.image, GameOverImage.rect, Color.White);
-           }
-            
-
+           }       
             spriteBatch.End();
             base.Draw(gameTime);
         }
