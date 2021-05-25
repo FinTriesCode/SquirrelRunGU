@@ -32,8 +32,8 @@ namespace SquirrelRun
         Sprite2D riverTwo;
         Sprite2D road;
         Sprite2D roadTwo;
-        Graphic2D gameOverImage;
         Sprite2D castle;
+        Graphic2D gameOverImage;
         Graphic2D gameWinImage;
 
         SoundEffect jumpSound;
@@ -182,7 +182,7 @@ namespace SquirrelRun
             NutSpawningCode();
   
             //applying starting squirrel position
-            squirrelStartPos = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 150 - squirrel.image.Height, 0);
+            squirrelStartPos = new Vector3(displayWidth / 2 - squirrel.image.Width / 2, displayHeight + 20 - squirrel.image.Height / 2, 0);
             squirrel.position = squirrelStartPos;
 
             //Sets position for bottom river
@@ -598,7 +598,8 @@ namespace SquirrelRun
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
-            spriteBatch.DrawString(font, "Squirrels saved: " + squirrelsRescued, new Vector2(25, displayHeight - 50), Color.White);
+            spriteBatch.DrawString(font, "Squirrel X: " + squirrel.position.X, new Vector2(25, 80), Color.White);
+            spriteBatch.DrawString(font, "Squirrel Y: " + squirrel.position.Y, new Vector2(25, 110), Color.White);
             
 
             if (gameOver == true)
