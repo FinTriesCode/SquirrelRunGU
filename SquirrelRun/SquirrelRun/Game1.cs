@@ -304,6 +304,9 @@ namespace SquirrelRun
         }
 
         //movement function for player
+        //The else if statements prevent more than one key being pressed at a time.
+        //This stops the player from moving diagonally and prevents them from moving twice as fast
+        //by pressing an arrow key and a WASD key in the same direction.
         void PlayerMovement()
         {   //controls for pro gamers
             if (Keyboard.GetState().IsKeyDown(Keys.W))
