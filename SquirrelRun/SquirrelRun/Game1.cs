@@ -129,7 +129,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -152,8 +152,8 @@ namespace SquirrelRun
             squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 3.5f, false);
             car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
-            river = new Sprite2D(Content, "river", 0.4f, 5f, false);
-            riverTwo = new Sprite2D(Content, "river", 0.4f, 5f, false);
+            river = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
+            riverTwo = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
@@ -243,7 +243,7 @@ namespace SquirrelRun
 
             river.rect.X = (int)river.position.X;
             river.rect.Y = (int)river.position.Y;
-            Content.Load<Texture2D>("river");
+            Content.Load<Texture2D>("river_v2");
 
             riverTwo.rect.X = (int)riverTwo.position.X;
             riverTwo.rect.Y = (int)riverTwo.position.Y;
@@ -488,7 +488,8 @@ namespace SquirrelRun
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightGreen);
+            //Background colour
+            GraphicsDevice.Clear(Color.LimeGreen);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -496,8 +497,8 @@ namespace SquirrelRun
             //draw so that we can visibly see the sprites on the screen.
             spriteBatch.Draw(road.image, road.rect, Color.White);
             spriteBatch.Draw(roadTwo.image, roadTwo.rect, Color.White);
-            spriteBatch.Draw(river.image, river.rect, Color.Blue);
-            spriteBatch.Draw(riverTwo.image, riverTwo.rect, Color.Blue);
+            spriteBatch.Draw(river.image, river.rect, Color.DeepSkyBlue);
+            spriteBatch.Draw(riverTwo.image, riverTwo.rect, Color.DeepSkyBlue);
 
             for (int acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {
@@ -507,8 +508,8 @@ namespace SquirrelRun
                 }
             }
 
-            spriteBatch.Draw(car.image, car.rect, Color.White);
-            spriteBatch.Draw(carTwo.image, carTwo.rect, Color.White);
+            spriteBatch.Draw(car.image, car.rect, Color.Crimson);
+            spriteBatch.Draw(carTwo.image, carTwo.rect, Color.Yellow);
             spriteBatch.Draw(log.image, log.rect, Color.White);
             spriteBatch.Draw(nessie.image, nessie.rect, Color.White);
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
