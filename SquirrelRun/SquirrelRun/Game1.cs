@@ -24,7 +24,7 @@ namespace SquirrelRun
         Sprite2D car;
         Sprite2D carTwo;
         SpriteFont font;
-        Sprite2D[] acorns = new Sprite2D[5];
+        Sprite2D[] acorns = new Sprite2D[9];
         Sprite2D log;
         Sprite2D nessie;
         Sprite2D river;
@@ -32,7 +32,6 @@ namespace SquirrelRun
         Sprite2D road;
         Sprite2D roadTwo;
         Sprite2D GameOverImage;
-
 
         int lives = 5;
         int score = 0;
@@ -43,7 +42,6 @@ namespace SquirrelRun
         float carSpeed = 3f;
         Vector3 carSpawnPos = Vector3.Zero;
         Vector3 carEndPos = Vector3.Zero;
-
 
         float car2Speed = 3f;
         Vector3 car2SpawnPos = Vector3.Zero;
@@ -58,23 +56,8 @@ namespace SquirrelRun
         Vector3 nessieEndPos = Vector3.Zero;
 
         Vector3 squirrelStartPos = Vector3.Zero;
-
+        Vector3[] nutsPosition = new Vector3[9];
         
-
-
-        public void Random()
-        {
-            //random number generator
-            Random rand = new Random();
-            int randint = rand.Next(1, 10);
-        }
-
-
-        //nuts array
-        Vector3[] nutsPosition = new Vector3[6];
-        
-   
-
         struct Sprite2D
         {
             public Texture2D image;
@@ -86,8 +69,7 @@ namespace SquirrelRun
             public Vector2 origin;
             public Rectangle rect;
             public bool bonus;
-            public float size;
-            
+            public float size;           
 
             public Sprite2D(ContentManager content, string filename, float sizeratio, float _speed, bool _bonus)
             {
@@ -109,7 +91,6 @@ namespace SquirrelRun
                 bonus = _bonus;
 
             }     
-
         }        
     
 
@@ -166,9 +147,9 @@ namespace SquirrelRun
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //sprite variables and calling 
-            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.4f, 4f, false);
-            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.4f, 5f, false);
-            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 5f, false);
+            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.4f, 3.5f, false);
+            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.4f, 3.5f, false);
+            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 3.5f, false);
             car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river", 0.4f, 5f, false);
@@ -311,6 +292,12 @@ namespace SquirrelRun
             {
                 RestartGame();
             }
+
+            //Manual restart
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                RestartGame();
+            }
             //add a win version of the code above
 
             base.Update(gameTime);
@@ -437,11 +424,7 @@ namespace SquirrelRun
 
         void RiverLogic()
         {
-            if(squirrel.bBox.Intersects(river.bBox) && !squirrel.bBox.Intersects(log.bBox))
-            {
-                SquirrelDeath();
-            }
-            if (squirrel.bBox.Intersects(riverTwo.bBox) && !squirrel.bBox.Intersects(nessie.bBox))
+            if(squirrel.bBox.Intersects(river.bBox) && !squirrel.bBox.Intersects(log.bBox) || squirrel.bBox.Intersects(riverTwo.bBox) && !squirrel.bBox.Intersects(nessie.bBox))
             {
                 SquirrelDeath();
             }
@@ -460,7 +443,10 @@ namespace SquirrelRun
             nutsPosition[2] = new Vector3(100, 300, 0);
             nutsPosition[3] = new Vector3(150, 250, 0);
             nutsPosition[4] = new Vector3(300, 300, 0);
-
+            nutsPosition[5] = new Vector3(150, 200, 0);
+            nutsPosition[6] = new Vector3(200, 100, 0);
+            nutsPosition[7] = new Vector3(200, 50, 0);
+            nutsPosition[8] = new Vector3(250, 50, 0);
             for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {
                 Content.Load<Texture2D>("acorn");
@@ -517,9 +503,8 @@ namespace SquirrelRun
             //spriteBatch.Draw(GameOver.image, squirrel.rect, Color.White);
 
             //display font of lives and score
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
-
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
             for (int acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {
                 if (acorns[acornArrayPos].visible == true)
