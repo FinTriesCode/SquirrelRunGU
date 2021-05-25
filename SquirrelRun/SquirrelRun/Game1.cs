@@ -373,8 +373,7 @@ namespace SquirrelRun
             squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
             squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
 
-            SquirrelRescued();
-            
+            SquirrelRescued();           
         }
 
         public void DisplayGameOver()
@@ -564,7 +563,7 @@ namespace SquirrelRun
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
-            spriteBatch.DrawString(font, "Squirrels rescued: " + squirrelsRescued, new Vector2(25, 80), Color.White);
+            spriteBatch.DrawString(font, "Squirrels saved: " + squirrelsRescued, new Vector2(25, displayHeight - 50), Color.White);
 
             if (gameOver == true)
             {
