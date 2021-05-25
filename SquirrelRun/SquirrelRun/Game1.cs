@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.IO;
 using System.Diagnostics;
@@ -32,6 +33,12 @@ namespace SquirrelRun
         Sprite2D road;
         Sprite2D roadTwo;
         Sprite2D GameOverImage;
+
+        SoundEffect jumpSound;
+        Song bgMusic;
+
+        Random rand = new Random();
+
 
         int lives = 5;
         int score = 0;
@@ -147,9 +154,9 @@ namespace SquirrelRun
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //sprite variables and calling 
-            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.4f, 3.5f, false);
-            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.4f, 3.5f, false);
-            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.4f, 3.5f, false);
+            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.2f, 3.5f, false);
+            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.2f, 3.5f, false);
+            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.2f, 3.5f, false);
             car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
@@ -159,6 +166,12 @@ namespace SquirrelRun
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
             nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
             //GameOverImage = new Graphic2D(Content, "GameOverImage", displayWidth, displayHeight); 
+
+            //Sound Effects + Music
+            jumpSound = Content.Load<SoundEffect>("jump");
+            bgMusic = Content.Load<Song>("bg_music");
+            MediaPlayer.Play(bgMusic);
+            MediaPlayer.IsRepeating = true;
 
             NutSpawningCode();
   
@@ -301,6 +314,7 @@ namespace SquirrelRun
             {
                 RestartGame();
             }
+
             //add a win version of the code above
 
             base.Update(gameTime);
@@ -344,6 +358,9 @@ namespace SquirrelRun
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
                 squirrel.position.X += squirrel.speed;
             }
+
+
+
             squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
             squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
         }

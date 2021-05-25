@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
+#begin bg_music.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:bg_music.mp3
+
 #begin car.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,6 +66,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:goal.png
+
+#begin jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:jump.wav
 
 #begin log.jpg
 /importer:TextureImporter
