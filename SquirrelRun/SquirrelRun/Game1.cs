@@ -136,7 +136,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            //graphics.ToggleFullScreen();
+            graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -524,12 +524,11 @@ namespace SquirrelRun
                     spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
                 }
             }
-
-            spriteBatch.Draw(car.image, car.rect, Color.Crimson);
-            spriteBatch.Draw(carTwo.image, carTwo.rect, Color.Yellow);
             spriteBatch.Draw(log.image, log.rect, Color.White);
             spriteBatch.Draw(nessie.image, nessie.rect, Color.White);
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
+            spriteBatch.Draw(car.image, car.rect, Color.Crimson);
+            spriteBatch.Draw(carTwo.image, carTwo.rect, Color.Yellow);
             //spriteBatch.Draw(GameOver.image, squirrel.rect, Color.White);
 
             //display font of lives and score
