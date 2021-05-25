@@ -221,9 +221,6 @@ namespace SquirrelRun
             squirrel.rect.X = (int)squirrel.position.X;
             squirrel.rect.Y = (int)squirrel.position.Y;
 
-            //set squirrel bounding box
-            squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
-
             //setting car position
             car.rect.X = (int)car.position.X;
             car.rect.Y = (int)car.position.Y;
@@ -262,6 +259,10 @@ namespace SquirrelRun
             GameOverImage.rect.Y = (int)GameOverImage.position.Y;
             //Content.Load<Texture2D>("GameOverImage");
 
+
+            //set squirrel bounding box
+            squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
+           
             //set car(s) bounding box
             car.bBox = new BoundingBox(new Vector3(car.position.X - car.rect.Width / 2, car.position.Y - car.rect.Height / 2, 0), new Vector3(car.position.X + car.rect.Width / 2, car.position.Y + car.rect.Height / 2, 0));
             carTwo.bBox = new BoundingBox(new Vector3(carTwo.position.X - carTwo.rect.Width / 2, carTwo.position.Y - carTwo.rect.Height / 2, 0), new Vector3(carTwo.position.X + carTwo.rect.Width / 2, carTwo.position.Y + carTwo.rect.Height / 2, 0));
@@ -272,9 +273,11 @@ namespace SquirrelRun
             //set nessie bounding box
             nessie.bBox = new BoundingBox(new Vector3(nessie.position.X - nessie.rect.Width / 2, nessie.position.Y - nessie.rect.Height / 2, 0), new Vector3(nessie.position.X + nessie.rect.Width / 2, nessie.position.Y + nessie.rect.Height / 2, 0));
 
+            //Setting bounding boxes for both rivers.
             river.bBox = new BoundingBox(new Vector3(river.position.X - river.rect.Width / 2, river.position.Y - river.rect.Height / 2, 0), new Vector3(river.position.X + river.rect.Width / 2, river.position.Y + river.rect.Height / 2, 0));
             riverTwo.bBox = new BoundingBox(new Vector3(riverTwo.position.X - riverTwo.rect.Width / 2, riverTwo.position.Y - riverTwo.rect.Height / 2, 0), new Vector3(riverTwo.position.X + riverTwo.rect.Width / 2, riverTwo.position.Y + riverTwo.rect.Height / 2, 0));
 
+            //Setting bounding boxes for both roads.
             road.bBox = new BoundingBox(new Vector3(road.position.X - road.rect.Width / 2, road.position.Y - road.rect.Height / 2, 0), new Vector3(road.position.X + road.rect.Width / 2, road.position.Y + road.rect.Height / 2, 0));
             roadTwo.bBox = new BoundingBox(new Vector3(roadTwo.position.X - roadTwo.rect.Width / 2, roadTwo.position.Y - roadTwo.rect.Height / 2, 0), new Vector3(roadTwo.position.X + roadTwo.rect.Width / 2, roadTwo.position.Y + roadTwo.rect.Height / 2, 0));
 
