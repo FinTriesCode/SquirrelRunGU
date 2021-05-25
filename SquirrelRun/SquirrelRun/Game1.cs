@@ -32,7 +32,7 @@ namespace SquirrelRun
         Sprite2D riverTwo;
         Sprite2D road;
         Sprite2D roadTwo;
-        Sprite2D GameOverImage;
+        Graphic2D gameOverImage;
         Sprite2D castle;
 
         SoundEffect jumpSound;
@@ -139,7 +139,6 @@ namespace SquirrelRun
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
             //graphics.ToggleFullScreen();
-
             //font variable
             font = Content.Load<SpriteFont>("SR font");
 
@@ -168,7 +167,7 @@ namespace SquirrelRun
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
             nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
             castle = new Sprite2D(Content, "goal", 0.2f, 5f, false);
-            //GameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight); 
+            gameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight); 
 
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
@@ -273,9 +272,9 @@ namespace SquirrelRun
             roadTwo.rect.X = (int)roadTwo.position.X;
             roadTwo.rect.Y = (int)roadTwo.position.Y;
 
-            GameOverImage.rect.X = (int)GameOverImage.position.X;
-            GameOverImage.rect.Y = (int)GameOverImage.position.Y;
-            //Content.Load<Texture2D>("GameOverImage");
+            gameOverImage.rect.X = 0;
+            gameOverImage.rect.Y = (displayHeight - gameOverImage.rect.Height) / 2;
+            Content.Load<Texture2D>("GameOverImage");
 
             castle.rect.X = (int)castle.position.X;
             castle.rect.Y = (int)castle.position.Y;
@@ -314,6 +313,7 @@ namespace SquirrelRun
             NessieAI();
             RiverLogic();
             ScreenCollisions();
+            DisplayGameOver();
 
             if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
@@ -512,10 +512,6 @@ namespace SquirrelRun
             {
                 squirrel.position.Y = squirrel.rect.Height / 2;
             }
-            /*if (player1.position.Y <= player1.rect.Height / 2) //top
-            {
-                player1.position.Y = player1.rect.Height / 2;
-            }*/
         }
 
         void SquirrelRescued()
@@ -538,7 +534,6 @@ namespace SquirrelRun
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
             //draw so that we can visibly see the sprites on the screen.
             spriteBatch.Draw(road.image, road.rect, Color.White);
             spriteBatch.Draw(roadTwo.image, roadTwo.rect, Color.White);
@@ -558,7 +553,6 @@ namespace SquirrelRun
             spriteBatch.Draw(car.image, car.rect, Color.Crimson);
             spriteBatch.Draw(carTwo.image, carTwo.rect, Color.Yellow);
             spriteBatch.Draw(castle.image, castle.rect, Color.White);
-            //spriteBatch.Draw(GameOver.image, squirrel.rect, Color.White);
 
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
@@ -567,7 +561,7 @@ namespace SquirrelRun
 
             if (gameOver == true)
             {
-                spriteBatch.Draw(GameOverImage.image, GameOverImage.rect, Color.White);
+                spriteBatch.Draw(gameOverImage.image, gameOverImage.rect, Color.White);
             }       
             spriteBatch.End();
             base.Draw(gameTime);
