@@ -34,6 +34,7 @@ namespace SquirrelRun
         Sprite2D roadTwo;
         Graphic2D gameOverImage;
         Sprite2D castle;
+        Graphic2D gameWinImage;
 
         SoundEffect jumpSound;
         Song bgMusic;
@@ -66,6 +67,8 @@ namespace SquirrelRun
 
         Vector3 squirrelStartPos = Vector3.Zero;
         Vector3[] nutsPosition = new Vector3[9];
+
+        bool gameWin = false;
         
         struct Sprite2D
         {
@@ -167,7 +170,8 @@ namespace SquirrelRun
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
             nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
             castle = new Sprite2D(Content, "goal", 0.2f, 5f, false);
-            gameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight); 
+            gameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight);
+            gameWinImage = new Graphic2D(Content, "gameWinImage", displayWidth, displayHeight);
 
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
@@ -276,6 +280,10 @@ namespace SquirrelRun
             gameOverImage.rect.Y = (displayHeight - gameOverImage.rect.Height) / 2;
             Content.Load<Texture2D>("GameOverImage");
 
+            gameWinImage.rect.X = 0;
+            gameWinImage.rect.Y = (displayHeight - gameOverImage.rect.Height) / 2;
+            Content.Load<Texture2D>("gameWinImage");
+
             castle.rect.X = (int)castle.position.X;
             castle.rect.Y = (int)castle.position.Y;
             Content.Load<Texture2D>("goal");
@@ -314,11 +322,23 @@ namespace SquirrelRun
             RiverLogic();
             ScreenCollisions();
             DisplayGameOver();
+            GameWin();
+            InstaWin();
+            InstaDeath();
 
-            if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Back))
             {
                 RestartGame();
             }
+            if (gameWin == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                RestartGame();
+            }
+
+
+
+
+
 
             //Manual restart
             if (Keyboard.GetState().IsKeyDown(Keys.R))
@@ -523,6 +543,30 @@ namespace SquirrelRun
             }
         }
 
+        void GameWin()
+        {
+            if (squirrelsRescued >= 3)
+            {
+                gameWin = true;
+            }
+        }
+
+        /*void InstaWin()
+        {
+           if (Keyboard.GetState().IsKeyDown(Keys.I))
+            {
+                squirrelsRescued = squirrelsRescued + 3; 
+            }
+        }
+
+        void InstaDeath()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.O))
+            {
+                lives = lives - 5;
+            }
+        }*/
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -558,13 +602,26 @@ namespace SquirrelRun
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
             spriteBatch.DrawString(font, "Squirrels saved: " + squirrelsRescued, new Vector2(25, displayHeight - 50), Color.White);
+            
 
             if (gameOver == true)
             {
                 spriteBatch.Draw(gameOverImage.image, gameOverImage.rect, Color.White);
-            }       
+            }
+
+            if (gameWin == true)
+            {
+                spriteBatch.Draw(gameWinImage.image, gameWinImage.rect, Color.White);
+            }
+
+           
+
             spriteBatch.End();
+
             base.Draw(gameTime);
+            
         }
+
+
     }
 }
