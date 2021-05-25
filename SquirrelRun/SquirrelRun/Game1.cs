@@ -309,48 +309,37 @@ namespace SquirrelRun
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size); 
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
-                //press w and update the sprite to the forward version of the original sprite
-               
+                //press w and update the sprite to the forward version of the original sprite              
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            else if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            else if(Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
             //arrow keys for Marion
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            else if(Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.Y -= squirrel.speed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else if(Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X -= squirrel.speed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            else if(Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
-                squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-                squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
                 squirrel.position.X += squirrel.speed;
             }
+            squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
+            squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
         }
 
         public void DisplayGameOver()
@@ -476,9 +465,15 @@ namespace SquirrelRun
         void ScreenCollisions()
         {
             //Left
-            if (squirrel.position.X <= 0) squirrel.position.X = 0;
+            if (squirrel.position.X <= 0)
+            {
+                squirrel.position.X = 0;
+            }
             //Right
-            if(squirrel.position.X >= displayWidth) squirrel.position.X = displayWidth;
+            if (squirrel.position.X >= displayWidth - squirrel.rect.Width)
+            {
+                squirrel.position.X = displayWidth - squirrel.rect.Width;
+            }
         }
 
         /// <summary>
