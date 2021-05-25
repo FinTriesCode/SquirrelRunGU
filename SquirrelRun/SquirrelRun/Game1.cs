@@ -172,7 +172,7 @@ namespace SquirrelRun
             bgMusic = Content.Load<Song>("bg_music");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
-
+            MediaPlayer.Volume = .2f;
             NutSpawningCode();
   
             //applying starting squirrel position
