@@ -157,18 +157,18 @@ namespace SquirrelRun
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //sprite variables and calling 
-            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.2f, 3.5f, false);
-            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.2f, 3.5f, false);
-            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.2f, 3.5f, false);
-            car = new Sprite2D(Content, "car", 0.3f, 5f, false);           
-            carTwo = new Sprite2D(Content, "car", 0.3f, 5f, false);
+            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.2f, 4f, false);
+            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.2f, 4f, false);
+            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.2f, 4f, false);
+            car = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);           
+            carTwo = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
             riverTwo = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
             nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
-            castle = new Sprite2D(Content, "goal", 0.2f, 5f, false);
+            castle = new Sprite2D(Content, "castle", 0.15f, 5f, false);
             gameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight);
             gameWinImage = new Graphic2D(Content, "gameWinImage", displayWidth, displayHeight);
 
@@ -231,6 +231,7 @@ namespace SquirrelRun
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             //exit game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -244,12 +245,12 @@ namespace SquirrelRun
             //setting car position
             car.rect.X = (int)car.position.X;
             car.rect.Y = (int)car.position.Y;
-            Content.Load<Texture2D>("car");
+            Content.Load<Texture2D>("car_v2");
 
             //setting car 2 position
             carTwo.rect.X = (int)carTwo.position.X;
             carTwo.rect.Y = (int)carTwo.position.Y;
-            Content.Load<Texture2D>("car");
+            Content.Load<Texture2D>("car_v2");
 
             //setting logs position
             log.rect.X = (int)log.position.X;
@@ -285,7 +286,7 @@ namespace SquirrelRun
 
             castle.rect.X = (int)castle.position.X;
             castle.rect.Y = (int)castle.position.Y;
-            Content.Load<Texture2D>("goal");
+            Content.Load<Texture2D>("castle");
 
             //set squirrel bounding box
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
@@ -356,6 +357,7 @@ namespace SquirrelRun
             {
                 squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
                 squirrel.position.Y -= squirrel.speed;
+
                 //press w and update the sprite to the forward version of the original sprite              
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -407,7 +409,7 @@ namespace SquirrelRun
             }
         }
        
-        //For car that moves to the left
+        //For car that moves to the right (Car on second row from bottom.)
         void CarLogic()
         {
             if (squirrel.bBox.Intersects(car.bBox)) SquirrelDeath();               
@@ -417,7 +419,7 @@ namespace SquirrelRun
             if(car.position.X <= carEndPos.X)  car.position.X = carSpawnPos.X; //if car position is equal to car end position car positon 'resets' to car spawn position
         }
 
-        //For car that moves to the right
+        //For car that moves to the left (Car on first row from bottom.)
         void Car2Logic()
         {
             if (squirrel.bBox.Intersects(carTwo.bBox))  SquirrelDeath();
