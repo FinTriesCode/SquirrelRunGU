@@ -610,10 +610,8 @@ namespace SquirrelRun
                 spriteBatch.Draw(gameWinImage.image, gameWinImage.rect, Color.White);
             }
 
-
             spriteBatch.DrawString(font, "Game Win: " + gameWin, new Vector2(25, displayHeight - 80), Color.White);
             spriteBatch.DrawString(font, "Game Over: " + gameOver, new Vector2(25, displayHeight - 110), Color.White);
-
             spriteBatch.End();
 
             base.Draw(gameTime);
