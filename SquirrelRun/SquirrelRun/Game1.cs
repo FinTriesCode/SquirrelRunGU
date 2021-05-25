@@ -101,7 +101,6 @@ namespace SquirrelRun
                 speed = _speed;
                 colour = Color.White;
                 bonus = _bonus;
-
             }     
         }        
     
@@ -322,23 +321,19 @@ namespace SquirrelRun
             RiverLogic();
             ScreenCollisions();
             DisplayGameOver();
-            GameWin();
+            DisplayGameWin();
             InstaWin();
-            InstaDeath();
+            //InstaDeath();
+            SquirrelRescued();
 
             if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Back))
             {
                 RestartGame();
             }
-            if (gameWin == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (gameWin == true && Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 RestartGame();
             }
-
-
-
-
-
 
             //Manual restart
             if (Keyboard.GetState().IsKeyDown(Keys.R))
@@ -391,9 +386,7 @@ namespace SquirrelRun
             }
 
             squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
-            squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
-
-            SquirrelRescued();           
+            squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);       
         }
 
         public void DisplayGameOver()
@@ -513,6 +506,7 @@ namespace SquirrelRun
                 acorns[i].visible = true;                
             }
             gameOver = false;
+            gameWin = false;
         }
 
         void ScreenCollisions()
@@ -543,7 +537,7 @@ namespace SquirrelRun
             }
         }
 
-        void GameWin()
+        void DisplayGameWin()
         {
             if (squirrelsRescued >= 3)
             {
@@ -551,7 +545,7 @@ namespace SquirrelRun
             }
         }
 
-        /*void InstaWin()
+        void InstaWin()
         {
            if (Keyboard.GetState().IsKeyDown(Keys.I))
             {
@@ -565,7 +559,7 @@ namespace SquirrelRun
             {
                 lives = lives - 5;
             }
-        }*/
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -614,7 +608,9 @@ namespace SquirrelRun
                 spriteBatch.Draw(gameWinImage.image, gameWinImage.rect, Color.White);
             }
 
-           
+
+            spriteBatch.DrawString(font, "Game Win: " + gameWin, new Vector2(25, displayHeight - 80), Color.White);
+            spriteBatch.DrawString(font, "Game Over: " + gameOver, new Vector2(25, displayHeight - 110), Color.White);
 
             spriteBatch.End();
 
