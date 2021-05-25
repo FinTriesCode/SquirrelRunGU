@@ -33,6 +33,7 @@ namespace SquirrelRun
         Sprite2D road;
         Sprite2D roadTwo;
         Sprite2D GameOverImage;
+        Sprite2D castle;
 
         SoundEffect jumpSound;
         Song bgMusic;
@@ -42,6 +43,7 @@ namespace SquirrelRun
 
         int lives = 5;
         int score = 0;
+        int squirrelsRescued = 0;
         int displayHeight, displayWidth;
         int acornArrayPos = 0;
         bool gameOver = false;
@@ -136,7 +138,7 @@ namespace SquirrelRun
             //screen display and resolution
             displayHeight = graphics.GraphicsDevice.Viewport.Height;
             displayWidth = graphics.GraphicsDevice.Viewport.Width;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             //font variable
             font = Content.Load<SpriteFont>("SR font");
@@ -165,7 +167,8 @@ namespace SquirrelRun
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
             nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
-            //GameOverImage = new Graphic2D(Content, "GameOverImage", displayWidth, displayHeight); 
+            castle = new Sprite2D(Content, "goal", 0.2f, 5f, false);
+            //GameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight); 
 
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
@@ -205,6 +208,8 @@ namespace SquirrelRun
 
             road.position.Y = car.position.Y;
             roadTwo.position.Y = carTwo.position.Y;
+
+            castle.position = new Vector3(displayWidth / 2 - castle.rect.Width / 2, 0, 0);
 
         }
 
@@ -272,6 +277,9 @@ namespace SquirrelRun
             GameOverImage.rect.Y = (int)GameOverImage.position.Y;
             //Content.Load<Texture2D>("GameOverImage");
 
+            castle.rect.X = (int)castle.position.X;
+            castle.rect.Y = (int)castle.position.Y;
+            Content.Load<Texture2D>("goal");
 
             //set squirrel bounding box
             squirrel.bBox = new BoundingBox(new Vector3(squirrel.position.X - squirrel.rect.Width / 2, squirrel.position.Y - squirrel.rect.Height / 2, 0), new Vector3(squirrel.position.X + squirrel.rect.Width / 2, squirrel.position.Y + squirrel.rect.Height / 2, 0));
@@ -293,6 +301,9 @@ namespace SquirrelRun
             //Setting bounding boxes for both roads.
             road.bBox = new BoundingBox(new Vector3(road.position.X - road.rect.Width / 2, road.position.Y - road.rect.Height / 2, 0), new Vector3(road.position.X + road.rect.Width / 2, road.position.Y + road.rect.Height / 2, 0));
             roadTwo.bBox = new BoundingBox(new Vector3(roadTwo.position.X - roadTwo.rect.Width / 2, roadTwo.position.Y - roadTwo.rect.Height / 2, 0), new Vector3(roadTwo.position.X + roadTwo.rect.Width / 2, roadTwo.position.Y + roadTwo.rect.Height / 2, 0));
+
+            castle.bBox = new BoundingBox(new Vector3(castle.position.X - castle.rect.Width / 2, castle.position.Y - castle.rect.Height / 2, 0), new Vector3(castle.position.X + castle.rect.Width / 2, castle.position.Y + castle.rect.Height / 2, 0));
+            castle.bBox = new BoundingBox(new Vector3(castle.position.X - castle.rect.Width / 2, castle.position.Y - castle.rect.Height / 2, 0), new Vector3(castle.position.X + castle.rect.Width / 2, castle.position.Y + castle.rect.Height / 2, 0));
 
             //custom functions
             PlayerMovement();
@@ -359,10 +370,11 @@ namespace SquirrelRun
                 squirrel.position.X += squirrel.speed;
             }
 
-
-
             squirrel.rect.Width = (int)(squirrel.image.Width * squirrel.size);
             squirrel.rect.Height = (int)(squirrel.image.Height * squirrel.size);
+
+            SquirrelRescued();
+            
         }
 
         public void DisplayGameOver()
@@ -423,7 +435,6 @@ namespace SquirrelRun
 
         void NessieAI()
         {
-
             nessie.position.X += nessieSpeed; //move nessie to right automatically
 
             if (nessie.position.X >= nessieEndPos.X) //if nessie position is equal to nessie end position
@@ -497,6 +508,24 @@ namespace SquirrelRun
             {
                 squirrel.position.X = displayWidth - squirrel.rect.Width;
             }
+            //Top
+            if(squirrel.position.Y <= squirrel.rect.Height / 2)
+            {
+                squirrel.position.Y = squirrel.rect.Height / 2;
+            }
+            /*if (player1.position.Y <= player1.rect.Height / 2) //top
+            {
+                player1.position.Y = player1.rect.Height / 2;
+            }*/
+        }
+
+        void SquirrelRescued()
+        {
+            if(squirrel.bBox.Intersects(castle.bBox))
+            {
+                squirrel.position = squirrelStartPos;
+                squirrelsRescued += 1;
+            }
         }
 
         /// <summary>
@@ -529,16 +558,18 @@ namespace SquirrelRun
             spriteBatch.Draw(squirrel.image, squirrel.rect, Color.White);
             spriteBatch.Draw(car.image, car.rect, Color.Crimson);
             spriteBatch.Draw(carTwo.image, carTwo.rect, Color.Yellow);
+            spriteBatch.Draw(castle.image, castle.rect, Color.White);
             //spriteBatch.Draw(GameOver.image, squirrel.rect, Color.White);
 
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
-                      
-           if (gameOver == true)
-           {
+            spriteBatch.DrawString(font, "Squirrels rescued: " + squirrelsRescued, new Vector2(25, 80), Color.White);
+
+            if (gameOver == true)
+            {
                 spriteBatch.Draw(GameOverImage.image, GameOverImage.rect, Color.White);
-           }       
+            }       
             spriteBatch.End();
             base.Draw(gameTime);
         }
