@@ -39,11 +39,11 @@ namespace SquirrelRun
         int acornArrayPos = 0;
         bool gameOver = false;
 
-        float carSpeed = 3f;
+        float carSpeed = 4f;
         Vector3 carSpawnPos = Vector3.Zero;
         Vector3 carEndPos = Vector3.Zero;
 
-        float car2Speed = 3f;
+        float car2Speed = 4f;
         Vector3 car2SpawnPos = Vector3.Zero;
         Vector3 car2EndPos = Vector3.Zero;
 
@@ -371,22 +371,24 @@ namespace SquirrelRun
             }
         }
        
+        //For car that moves to the left
         void CarLogic()
         {
             if (squirrel.bBox.Intersects(car.bBox)) SquirrelDeath();               
 
             car.position.X -= carSpeed; //move car to left automatically
            
-            if(car.position.X == carEndPos.X)  car.position.X = carSpawnPos.X; //if car position is equal to car end position car positon 'resets' to car spawn position
+            if(car.position.X <= carEndPos.X)  car.position.X = carSpawnPos.X; //if car position is equal to car end position car positon 'resets' to car spawn position
         }
 
+        //For car that moves to the right
         void Car2Logic()
         {
             if (squirrel.bBox.Intersects(carTwo.bBox))  SquirrelDeath();
 
             carTwo.position.X += car2Speed; //move car to right automatically
 
-            if (carTwo.position.X == car2EndPos.X) //if car position is equal to car end position
+            if (carTwo.position.X >= car2EndPos.X) //if car position is equal to car end position
             {
                 carTwo.position.X = car2SpawnPos.X; //car positon 'resets' to car spawn position
             }
@@ -395,11 +397,11 @@ namespace SquirrelRun
         void LogLogic()
         {
 
-            log.position.X -= logSpeed; //move car to left automatically
+            log.position.X -= logSpeed; //move log to left automatically
 
-            if (log.position.X == logEndPos.X) //if car position is equal to car end position
+            if (log.position.X <= logEndPos.X) //if log position is equal to log end position
             {
-                log.position.X = logSpawnPos.X; //car positon 'resets' to car spawn position
+                log.position.X = logSpawnPos.X; //log positon 'resets' to log spawn position
             }
             if (log.bBox.Intersects(squirrel.bBox))
             {
@@ -412,7 +414,7 @@ namespace SquirrelRun
 
             nessie.position.X += nessieSpeed; //move nessie to right automatically
 
-            if (nessie.position.X == nessieEndPos.X) //if nessie position is equal to nessie end position
+            if (nessie.position.X >= nessieEndPos.X) //if nessie position is equal to nessie end position
             {
                 nessie.position.X = nessieSpawnPos.X; //nessie positon 'resets' to nessie spawn position
             }
@@ -495,6 +497,15 @@ namespace SquirrelRun
             spriteBatch.Draw(roadTwo.image, roadTwo.rect, Color.White);
             spriteBatch.Draw(river.image, river.rect, Color.Blue);
             spriteBatch.Draw(riverTwo.image, riverTwo.rect, Color.Blue);
+
+            for (int acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
+            {
+                if (acorns[acornArrayPos].visible == true)
+                {
+                    spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
+                }
+            }
+
             spriteBatch.Draw(car.image, car.rect, Color.White);
             spriteBatch.Draw(carTwo.image, carTwo.rect, Color.White);
             spriteBatch.Draw(log.image, log.rect, Color.White);
@@ -505,13 +516,6 @@ namespace SquirrelRun
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
-            for (int acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
-            {
-                if (acorns[acornArrayPos].visible == true)
-                {
-                    spriteBatch.Draw(acorns[acornArrayPos].image, acorns[acornArrayPos].rect, Color.White);
-                }
-            }
                       
            if (gameOver == true)
            {
