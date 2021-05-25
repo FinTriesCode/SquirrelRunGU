@@ -65,6 +65,7 @@ namespace SquirrelRun
         Vector3 nessieSpawnPos = Vector3.Zero;
         Vector3 nessieEndPos = Vector3.Zero;
 
+        float squirrelSpeed = 3f;
         Vector3 squirrelStartPos = Vector3.Zero;
         Vector3[] nutsPosition = new Vector3[9];
 
@@ -157,9 +158,9 @@ namespace SquirrelRun
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //sprite variables and calling 
-            squirrel = new Sprite2D(Content, "red_squirrel_front", 0.2f, 4f, false);
-            squirrel_right = new Sprite2D(Content, "red_squirrel_right", 0.2f, 4f, false);
-            squirrel_left = new Sprite2D(Content, "red_squirrel_left", 0.2f, 4f, false);
+            squirrel = new Sprite2D(Content, "squirrel_front_v2", 0.3f, squirrelSpeed, false);
+            squirrel_right = new Sprite2D(Content, "squirrel_right_v2", 0.3f, squirrelSpeed, false);
+            squirrel_left = new Sprite2D(Content, "squirrel_left_v2", 0.3f, squirrelSpeed, false);
             car = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);           
             carTwo = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
@@ -177,7 +178,7 @@ namespace SquirrelRun
             bgMusic = Content.Load<Song>("bg_music");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = .2f;
+            MediaPlayer.Volume = .1f;
             NutSpawningCode();
   
             //applying starting squirrel position
@@ -355,35 +356,35 @@ namespace SquirrelRun
         {   //controls for pro gamers
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
+                squirrel.image = Content.Load<Texture2D>("squirrel_front_v2");
                 squirrel.position.Y -= squirrel.speed;
 
                 //press w and update the sprite to the forward version of the original sprite              
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
+                squirrel.image = Content.Load<Texture2D>("squirrel_left_v2");
                 squirrel.position.X -= squirrel.speed;
             }
             else if(Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
+                squirrel.image = Content.Load<Texture2D>("squirrel_right_v2");
                 squirrel.position.X += squirrel.speed;
             }
             //arrow keys for Marion
             else if(Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_front");
+                squirrel.image = Content.Load<Texture2D>("squirrel_front_v2");
                 squirrel.position.Y -= squirrel.speed;
             }
             else if(Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_left");
+                squirrel.image = Content.Load<Texture2D>("squirrel_left_v2");
                 squirrel.position.X -= squirrel.speed;
             }
             else if(Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                squirrel.image = Content.Load<Texture2D>("red_squirrel_right");
+                squirrel.image = Content.Load<Texture2D>("squirrel_right_v2");
                 squirrel.position.X += squirrel.speed;
             }
 
