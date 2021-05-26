@@ -43,7 +43,7 @@
 /processorParam:Quality=Best
 /build:bg_music.mp3
 
-#begin car_v2.png
+#begin car_v3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -53,7 +53,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:car_v2.png
+/build:car_v3.png
 
 #begin castle.png
 /importer:TextureImporter

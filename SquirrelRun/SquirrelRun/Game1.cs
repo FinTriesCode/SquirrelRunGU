@@ -165,8 +165,8 @@ namespace SquirrelRun
             squirrel = new Sprite2D(Content, "squirrel_front_v2", 0.3f, squirrelSpeed, false);
             squirrel_right = new Sprite2D(Content, "squirrel_right_v2", 0.3f, squirrelSpeed, false);
             squirrel_left = new Sprite2D(Content, "squirrel_left_v2", 0.3f, squirrelSpeed, false);
-            car = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);
-            carTwo = new Sprite2D(Content, "car_v2", 0.3f, 5f, false);
+            car = new Sprite2D(Content, "car_v3", 0.3f, 5f, false);
+            carTwo = new Sprite2D(Content, "car_v3", 0.3f, 5f, false);
             river = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
             riverTwo = new Sprite2D(Content, "river_v2", 0.4f, 5f, false);
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
@@ -182,7 +182,7 @@ namespace SquirrelRun
             bgMusic = Content.Load<Song>("bg_music");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = .1f;
+            MediaPlayer.Volume = .3f;
             NutSpawningCode();
 
             //applying starting squirrel position
@@ -253,12 +253,12 @@ namespace SquirrelRun
             //setting car position
             car.rect.X = (int)car.position.X;
             car.rect.Y = (int)car.position.Y;
-            Content.Load<Texture2D>("car_v2");
+            Content.Load<Texture2D>("car_v3");
 
             //setting car 2 position
             carTwo.rect.X = (int)carTwo.position.X;
             carTwo.rect.Y = (int)carTwo.position.Y;
-            Content.Load<Texture2D>("car_v2");
+            Content.Load<Texture2D>("car_v3");
 
             //setting logs position
             log.rect.X = (int)log.position.X;
