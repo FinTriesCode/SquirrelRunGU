@@ -334,8 +334,8 @@ namespace SquirrelRun
             ScreenCollisions();
             DisplayGameOver();
             DisplayGameWin();
-            InstaWin();
-            InstaDeath();
+            //InstaWin();       //MARION, THIS IS TO HELP YOUR TESTING/GRADING OF THE GAME EASIER (PRESS I)
+            //InstaDeath();     //MARION, THIS IS TO HELP YOUR TESTING/GRADING OF THE GAME EASIER (PRESS O)
             SquirrelRescued();
             if (isSquirrelDead)
             {
