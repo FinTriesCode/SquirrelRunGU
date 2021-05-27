@@ -179,7 +179,7 @@ namespace SquirrelRun
 
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
-            bgMusic = Content.Load<Song>("bg_music");
+            //bgMusic = Content.Load<Song>("bg_music");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = .3f;
@@ -335,7 +335,7 @@ namespace SquirrelRun
             DisplayGameOver();
             DisplayGameWin();
             InstaWin();
-            //InstaDeath();
+            InstaDeath();
             SquirrelRescued();
             if (isSquirrelDead)
             {
@@ -344,7 +344,7 @@ namespace SquirrelRun
 
             //RespawnSquirrel();
 
-            if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Back))
+            if (gameOver == true && Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 RestartGame();
             }
