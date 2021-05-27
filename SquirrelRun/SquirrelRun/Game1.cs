@@ -179,7 +179,7 @@ namespace SquirrelRun
 
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
-            //bgMusic = Content.Load<Song>("bg_music");
+            bgMusic = Content.Load<Song>("bg_music");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = .3f;
@@ -633,11 +633,17 @@ namespace SquirrelRun
             //display font of lives and score
             spriteBatch.DrawString(font, "Lives: " + lives , new Vector2(25, 20), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(25, 50), Color.White);
-            spriteBatch.DrawString(font, "Squirrel X: " + squirrel.position.X, new Vector2(25, 80), Color.White);
-            spriteBatch.DrawString(font, "Squirrel Y: " + squirrel.position.Y, new Vector2(25, 110), Color.White);
-            spriteBatch.DrawString(font, "respawn delay: " + respawnDelayLeft, new Vector2(25, 140), Color.White);
-            spriteBatch.DrawString(font, "isSquirreldead: " + isSquirrelDead, new Vector2(25, 170), Color.White);
-            spriteBatch.DrawString(font, "deltaTime: " + deltaTime, new Vector2(25, 200), Color.White);
+            spriteBatch.DrawString(font, "Squirrels Saved: " + squirrelsRescued + "/3", new Vector2(25, displayHeight - 50), Color.White);
+
+
+            //DEBUG STATUS CODE
+            //spriteBatch.DrawString(font, "Squirrel X: " + squirrel.position.X, new Vector2(25, 80), Color.White);
+            //spriteBatch.DrawString(font, "Squirrel Y: " + squirrel.position.Y, new Vector2(25, 110), Color.White);
+            //spriteBatch.DrawString(font, "respawn delay: " + respawnDelayLeft, new Vector2(25, 140), Color.White);
+            //spriteBatch.DrawString(font, "isSquirreldead: " + isSquirrelDead, new Vector2(25, 170), Color.White);
+            //spriteBatch.DrawString(font, "deltaTime: " + deltaTime, new Vector2(25, 200), Color.White);
+
+
             if (gameOver == true)
             {
                 spriteBatch.Draw(gameOverImage.image, gameOverImage.rect, Color.White);
@@ -648,8 +654,10 @@ namespace SquirrelRun
                 spriteBatch.Draw(gameWinImage.image, gameWinImage.rect, Color.White);
             }
 
-            spriteBatch.DrawString(font, "Game Win: " + gameWin, new Vector2(25, displayHeight - 80), Color.White);
-            spriteBatch.DrawString(font, "Game Over: " + gameOver, new Vector2(25, displayHeight - 110), Color.White);
+            //DEBUG STATUS CODE
+            //spriteBatch.DrawString(font, "Game Win: " + gameWin, new Vector2(25, displayHeight - 80), Color.White);
+            //spriteBatch.DrawString(font, "Game Over: " + gameOver, new Vector2(25, displayHeight - 110), Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
