@@ -145,6 +145,18 @@
 /processorParam:TextureFormat=Color
 /build:road.jpg
 
+#begin sfx_pickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx_pickup.wav
+
+#begin sfx_rescue.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx_rescue.wav
+
 #begin squirrel_front_v2.png
 /importer:TextureImporter
 /processor:TextureProcessor

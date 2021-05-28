@@ -37,6 +37,8 @@ namespace SquirrelRun
         Graphic2D gameWinImage;
 
         SoundEffect jumpSound;
+        SoundEffect pickupSound;
+        SoundEffect rescueSound;
         Song bgMusic;
 
         Random rand = new Random();
@@ -180,6 +182,8 @@ namespace SquirrelRun
             //Sound Effects + Music
             jumpSound = Content.Load<SoundEffect>("jump");
             bgMusic = Content.Load<Song>("bg_music");
+            pickupSound = Content.Load<SoundEffect>("sfx_pickup");
+            rescueSound = Content.Load<SoundEffect>("sfx_rescue");
             MediaPlayer.Play(bgMusic);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = .3f;
@@ -422,6 +426,7 @@ namespace SquirrelRun
                 if (squirrel.bBox.Intersects(acorns[i].bBox) && acorns[i].visible == true)
                 {
                     score++;
+                    pickupSound.Play(0.1f, 0, 0);
                     acorns[i].visible = false;
                 }
             }
@@ -571,6 +576,7 @@ namespace SquirrelRun
         {
             if(squirrel.bBox.Intersects(castle.bBox))
             {
+                rescueSound.Play(0.3f, 0f, 0f);
                 squirrel.position = squirrelStartPos;
                 squirrelsRescued += 1;
             }
