@@ -172,7 +172,7 @@ namespace SquirrelRun
             road = new Sprite2D(Content, "road", 0.4f, 5f, false);
             roadTwo = new Sprite2D(Content, "road", 0.4f, 5f, false);
             log = new Sprite2D(Content, "log", 0.4f, 5f, false);
-            nessie = new Sprite2D(Content, "nessie", 0.4f, 5f, false);
+            nessie = new Sprite2D(Content, "nessie_v3", 0.5f, 5f, false);
             castle = new Sprite2D(Content, "castle", 0.15f, 5f, false);
             gameOverImage = new Graphic2D(Content, "gameOverImage", displayWidth, displayHeight);
             gameWinImage = new Graphic2D(Content, "gameWinImage", displayWidth, displayHeight);
@@ -265,10 +265,10 @@ namespace SquirrelRun
             log.rect.Y = (int)log.position.Y;
             Content.Load<Texture2D>("log");
 
-            //setting nessie postion
+            //setting nessie_v3 postion
             nessie.rect.X = (int)nessie.position.X;
             nessie.rect.Y = (int)nessie.position.Y;
-            Content.Load<Texture2D>("nessie");
+            Content.Load<Texture2D>("nessie_v3");
 
             river.rect.X = (int)river.position.X;
             river.rect.Y = (int)river.position.Y;
@@ -306,7 +306,7 @@ namespace SquirrelRun
             //set logs bounding box
             log.bBox = new BoundingBox(new Vector3(log.position.X - log.rect.Width / 2, log.position.Y - log.rect.Height / 2, 0), new Vector3(log.position.X + log.rect.Width / 2, log.position.Y + log.rect.Height / 2, 0));
 
-            //set nessie bounding box
+            //set nessie_v3 bounding box
             nessie.bBox = new BoundingBox(new Vector3(nessie.position.X - nessie.rect.Width / 2, nessie.position.Y - nessie.rect.Height / 2, 0), new Vector3(nessie.position.X + nessie.rect.Width / 2, nessie.position.Y + nessie.rect.Height / 2, 0));
 
             //Setting bounding boxes for both rivers.
@@ -467,11 +467,11 @@ namespace SquirrelRun
 
         void NessieAI()
         {
-            nessie.position.X += nessieSpeed; //move nessie to right automatically
+            nessie.position.X += nessieSpeed; //move nessie_v3 to right automatically
 
-            if (nessie.position.X >= nessieEndPos.X) //if nessie position is equal to nessie end position
+            if (nessie.position.X >= nessieEndPos.X) //if nessie_v3 position is equal to nessie_v3 end position
             {
-                nessie.position.X = nessieSpawnPos.X; //nessie positon 'resets' to nessie spawn position
+                nessie.position.X = nessieSpawnPos.X; //nessie_v3 positon 'resets' to nessie_v3 spawn position
             }
             if (nessie.bBox.Intersects(squirrel.bBox))
             {
@@ -513,14 +513,15 @@ namespace SquirrelRun
       
         void NutSpawningCode()
         {
+            //x = 100 means in river
             nutsPosition[0] = new Vector3(displayWidth / 2, 250f, 0);
-            nutsPosition[1] = new Vector3(100, 100, 0);
+            nutsPosition[1] = new Vector3(600, 100, 0);
             nutsPosition[2] = new Vector3(100, 300, 0);
             nutsPosition[3] = new Vector3(150, 250, 0);
-            nutsPosition[4] = new Vector3(300, 300, 0);
+            nutsPosition[4] = new Vector3(600, 300, 0);
             nutsPosition[5] = new Vector3(150, 200, 0);
             nutsPosition[6] = new Vector3(200, 100, 0);
-            nutsPosition[7] = new Vector3(200, 50, 0);
+            nutsPosition[7] = new Vector3(700, 50, 0);
             nutsPosition[8] = new Vector3(250, 50, 0);
             for (acornArrayPos = 0; acornArrayPos < acorns.Length; acornArrayPos++)
             {

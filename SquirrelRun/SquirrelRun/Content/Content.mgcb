@@ -109,7 +109,7 @@
 /processorParam:TextureFormat=Color
 /build:log.jpg
 
-#begin nessie.png
+#begin nessie_v3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,7 +119,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:nessie.png
+/build:nessie_v3.png
 
 #begin river_v2.png
 /importer:TextureImporter
